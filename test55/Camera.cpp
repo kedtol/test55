@@ -5,13 +5,14 @@
 Vector2D Camera::castTo2D(Vector3D v)
 {
 	Line line = Line(v, v - focuspoint);
+	Vector3D intersection;
 	double x, y;
 	try
 	{
-		Vector3D intersection = surface.intersect(line);
+		intersection = surface.intersect(line);
 
-		x = intersection.getZ() - surface.getPos().getZ() / (transform.getRot().getK().getZ());
-		y = intersection.getY() - surface.getPos().getY() - (x * (transform.getRot().getK().getY())) / (transform.getRot().getJ().getY());
+		x = (intersection.getZ() - surface.getPos().getZ()) / (transform.getRot().getK().getZ());
+		y = (intersection.getY() - surface.getPos().getY() - (x*transform.getRot().getK().getY()) ) / (transform.getRot().getJ().getY());
 
 	}
 	catch (const char* e)
@@ -20,7 +21,7 @@ Vector2D Camera::castTo2D(Vector3D v)
 	}
 		// no clipping?
 	//if (x < surfaceWidth * 2 && x > -surfaceWidth * 2 && y < surfaceHeight * 2 && y > -surfaceHeight * 2)
-		return (Vector2D(x + surfaceWidth / 2, y + surfaceHeight / 2) + viewport) * viewportScale;
+		return (Vector2D(y + surfaceWidth / 2, x + surfaceHeight / 2) + viewport) * viewportScale;
 	//else
 	//	throw "cant cast";
 }
@@ -28,12 +29,16 @@ Vector2D Camera::castTo2D(Vector3D v)
 Camera::Camera(SDL_Renderer* _renderer, InputHandler* _ih)
 {
 	renderer = _renderer;
-	surfaceHeight = 768;
 	surfaceWidth = 1024;
+	surfaceHeight = 768;
+	focaldistance = 300;
 	viewportScale = 1;
 	viewport = Vector2D();
-	focuspoint = Vector3D(-10, 0, 0);
-	surface = Surface(focuspoint, Vector3D());
+	transform = Transform();
+	transform.addPitch(0.7);
+	transform.addYaw(0.7);
+	focuspoint = Vector3D(0, 0, 0);
+	surface = Surface(Vector3D(), focuspoint);
 	drawBuffer = std::vector<Triangle2D>();
 	ih = _ih;
 }
@@ -46,49 +51,68 @@ void Camera::updateRotation()
 
 void Camera::movement()
 {
-	if (ih->isButtonHold(0))
-	{
-		focuspoint += Vector3D(0, 0, -10);
-	}
-
-	if (ih->isButtonHold(1))
-	{
-		focuspoint += Vector3D(0, 0, 10);
-	}
-
-	if (ih->isButtonHold(2))
-	{
-		focuspoint += Vector3D(0, -10, 0);
-	}
-
-	if (ih->isButtonHold(3))
-	{
-		focuspoint += Vector3D(0, 10, 0);
-	}
-
 	if (ih->isButtonHold(6))
 	{
-		transform.addPitch(+0.04);
+		focuspoint += transform.getRot().getJ() * -10;
+
 	}
 
 	if (ih->isButtonHold(7))
 	{
-		transform.addPitch(-0.04);
-		
+		focuspoint += transform.getRot().getJ() * 10;
+
 	}
 
 	if (ih->isButtonHold(8))
 	{
-		transform.addYaw(+0.04);
+		focuspoint += transform.getRot().getI() * 10;
 		
 	}
 
 	if (ih->isButtonHold(9))
 	{
-		transform.addYaw(-0.04);
+		focuspoint += transform.getRot().getI() * -10;
 		
 	}
 
+	if (ih->isButtonHold(0))
+	{
+		transform.addYaw(-0.04);
+	}
+
+	if (ih->isButtonHold(1))
+	{
+		transform.addYaw(0.04);
+		
+	}
+
+	if (ih->isButtonHold(2))
+	{
+		transform.addPitch(-0.04);
+		
+	}
+
+	if (ih->isButtonHold(3))
+	{
+		transform.addPitch(+0.04);
+		
+	}
+
+	if (ih->isButtonHold(10))
+	{
+
+		focuspoint += transform.getRot().getK() * -10;
+
+
+	}
+
+	if (ih->isButtonHold(11))
+	{
+
+		focuspoint += transform.getRot().getK() * +10;
+
+
+	}
 }
 
 void Camera::action()

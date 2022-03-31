@@ -6,7 +6,7 @@ Surface::Surface()
 	position = Vector3D();
 }
 
-Surface::Surface(Vector3D _normal, Vector3D _position)
+Surface::Surface(Vector3D _position, Vector3D _normal)
 {
 	normal = _normal;
 	position = _position;
@@ -18,18 +18,20 @@ Vector3D Surface::intersect(Line line) const // only works with try catch
 
 	double div = normal.dot(line.getDir());
 	double t = 0;
-	if (div != 0)
-	{
-		t = normal.dot(position - line.getPos()) / div;
-		intersection = line.getPos() + (line.getDir() * t);
-	}
-	else
-	{
-		throw "div by zero"; // todo: exception class
-	}
+	//if (div != 0)
+	//{
+		//t = normal.dot(position - line.getPos()) / div;
+		t = (normal.getX() * (position.getX() - line.getPos().getX()) + normal.getY() * (position.getY() - line.getPos().getY()) + normal.getZ() * (position.getZ() - line.getPos().getZ())) / ((normal.getX() * line.getDir().getX()) + (normal.getY() * line.getDir().getY()) + (normal.getZ() * line.getDir().getZ()));
 
-	if (t <= -0.99)
+		intersection = line.getDir() * t + line.getPos();
+	//}
+	//else
+	//{
+	//	throw "div by zero"; // todo: exception class
+	//}
+
+	if (t <= -1)
 		throw "intersection fail";
-	else
-		return intersection;
+		
+	return intersection;
 }

@@ -16,7 +16,7 @@ class Camera
 	Vector3D focuspoint;
 	Surface surface;
 	Transform transform;
-	double focaldistance = 300;
+	double focaldistance;
 	double surfaceWidth, surfaceHeight, viewportScale;
 	Vector2D viewport; // renderer resolution wont impact performance (the engine only casts points)
 	std::vector<Triangle2D> drawBuffer;

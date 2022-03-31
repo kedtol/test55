@@ -2,8 +2,8 @@
 class InputHandler 
 {
 
-    bool rawStateList[10];
-    bool keyStateList[10];
+    bool rawStateList[12];
+    bool keyStateList[12];
 
 public:
     InputHandler();

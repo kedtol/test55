@@ -117,6 +117,14 @@ int main(int argc, char* argv[])
             case SDLK_s:
                 ih.buttonPressed(9, false);
                 break;
+
+            case SDLK_r:
+                ih.buttonPressed(10, false);
+                break;
+
+            case SDLK_f:
+                ih.buttonPressed(11, false);
+                break;
             }
         break;
 
@@ -161,6 +169,14 @@ int main(int argc, char* argv[])
 
             case SDLK_s:
                 ih.buttonPressed(9, true);
+                break;
+
+            case SDLK_r:
+                ih.buttonPressed(10, true);
+                break;
+
+            case SDLK_f:
+                ih.buttonPressed(11, true);
                 break;
             }
 
