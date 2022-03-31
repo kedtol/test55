@@ -1,0 +1,40 @@
+#include "Transform.h"
+
+Transform::Transform()
+{
+	position = Vector3D();
+	rotation = Matrix3x3();
+	yaw = 0;
+	pitch = 0;
+	updateRotation();
+}
+
+
+Transform::Transform(Vector3D v)
+{
+	position = v;
+	rotation = Matrix3x3();
+	yaw = 0;
+	pitch = 0;
+	updateRotation();
+}
+
+Mesh Transform::applyTransform(Mesh& mesh) const
+{
+	return Mesh(mesh,rotation,position);
+}
+
+void Transform::rotateSurface(Surface& surface,double focaldistance,Vector3D focuspoint) const
+{
+	surface = Surface(rotation.getI(), (rotation.getI() * focaldistance) + focuspoint);
+}
+
+void Transform::updateRotation()
+{
+    Vector3D i = Vector3D(cos(yaw) * cos(pitch), sin(yaw) * cos(pitch), sin(pitch));
+    Vector3D j = Vector3D(-sin(yaw), cos(yaw), 0);
+    Vector3D k = Vector3D(-cos(yaw) * sin(pitch), -sin(yaw) * sin(pitch), cos(pitch));
+
+	rotation = Matrix3x3(i, j, k);
+
+}
