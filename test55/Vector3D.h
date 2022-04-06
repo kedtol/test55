@@ -41,7 +41,7 @@ public:
 	Vector3D getJ() const;
 	Vector3D getK() const;
 
-	Vector3D applyMatrix(Vector3D v);
+	//Vector3D applyMatrix(Vector3D v);
 
 };
 

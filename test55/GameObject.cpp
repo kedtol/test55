@@ -1,9 +1,9 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Transform _transform)
+GameObject::GameObject(Transform _transform, double panesize)
 {
 	transform = _transform;
-	mesh = Mesh(100.);
+	mesh = Mesh(panesize);
 }
 
 GameObject::GameObject(Transform _transform, Mesh _mesh)
@@ -14,7 +14,9 @@ GameObject::GameObject(Transform _transform, Mesh _mesh)
 
 void GameObject::action()
 {
-
+	//transform.addPitch((rand() % 10) / 100.);
+	//transform.addYaw((rand() % 10) / 100.);
+	transform.updateRotation();
 }
 
 void GameObject::draw(Camera* camera)

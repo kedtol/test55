@@ -13,5 +13,6 @@ public:
 	Vector3D getV1() { return v1; }
 	Vector3D getV2() { return v2; }
 	Vector3D getV3() { return v3; }
+	Vector3D getWpoint() const;
 	Material getM() { return m; }
 };

@@ -2,28 +2,31 @@
 #include "Line.h"
 
 
-Vector2D Camera::castTo2D(Vector3D v)
+
+Vector2D Camera::castTo2D(Vector3D v, bool* failed)
 {
 	Line line = Line(v, v - focuspoint);
 	Vector3D intersection;
 	double x, y;
-	try
-	{
-		intersection = surface.intersect(line);
 
+	intersection = surface.intersect(line,failed);
+	
+	if (!(*failed))
+	{
 		x = (intersection.getZ() - surface.getPos().getZ()) / (transform.getRot().getK().getZ());
 		y = (intersection.getY() - surface.getPos().getY() - (x*transform.getRot().getK().getY()) ) / (transform.getRot().getJ().getY());
-
-	}
-	catch (const char* e)
-	{
-		throw "cant cast";
+		
+		if (x < surfaceWidth * 2 && x > -surfaceWidth * 2 && y < surfaceHeight * 2 && y > -surfaceHeight * 2)
+			return (Vector2D(y + surfaceWidth / 2, x + surfaceHeight / 2) + viewport) * viewportScale;
+		else
+			*failed = true;
 	}
 		// no clipping?
-	//if (x < surfaceWidth * 2 && x > -surfaceWidth * 2 && y < surfaceHeight * 2 && y > -surfaceHeight * 2)
-		return (Vector2D(y + surfaceWidth / 2, x + surfaceHeight / 2) + viewport) * viewportScale;
+	
+		
 	//else
 	//	throw "cant cast";
+		return Vector2D();
 }
 
 Camera::Camera(SDL_Renderer* _renderer, InputHandler* _ih)
@@ -121,13 +124,28 @@ void Camera::action()
 	updateRotation();
 }
 
+bool compare(Triangle2D t1, Triangle2D t2)
+{
+	if (t1.getD() > t2.getD())
+		return true;
+	else
+		return false;
+}
+
 void Camera::draw()
 {
+	std::sort(drawBuffer.begin(), drawBuffer.end(), compare);
 	for (size_t i = 0; i < drawBuffer.size(); i++)
 	{
 		drawBuffer[i].draw(renderer);
 	}
+	std::stringstream strs;
+	strs << drawBuffer.size();
+	std::string temp_str = strs.str();
+	const char* char_type = (char*)temp_str.c_str();
+	stringRGBA(renderer, 10, 10, char_type, 255, 255, 255, 255);
 	drawBuffer.clear();
+	drawBuffer.shrink_to_fit();
 }
 
 void Camera::loadDrawBuffer(Mesh mesh)
@@ -136,21 +154,32 @@ void Camera::loadDrawBuffer(Mesh mesh)
 	{
 		for (size_t i = 0; i < mesh.getIndexBufferSize()-2; i+=3)
 		{
+			// -READING-
 			int iterator = static_cast<int>(i);
 			int sol = iterator / 3;
-			size_t vo = 0;
+			size_t vo = 0; // every third vertex
 			if (sol < mesh.getTriCount())
-				vo = sol; //size_t scam
+				vo = sol; //size_t scam 
 			int index = mesh.shareIndex()[i];
+			
 			Triangle3D tri = Triangle3D(mesh.loadVertex(mesh.shareIndex()[i]-1), mesh.loadVertex(mesh.shareIndex()[i+1] - 1), mesh.loadVertex(mesh.shareIndex()[i+2] - 1),mesh.loadBakedMaterial(vo));
-			// todo: culling
-			try
+			
+			// -CULLING-
+			Vector3D normal = mesh.loadNormal(vo); // normalbuffer stores normal vectors/face
+			if (normal.dot(focuspoint - tri.getWpoint()) < 0)
+				continue;
+
+			// -CASTING-
+			bool failed = false;
+			Vector2D v1 = castTo2D(tri.getV1(), &failed);
+			Vector2D v2 = castTo2D(tri.getV2(), &failed);
+			Vector2D v3 = castTo2D(tri.getV3(), &failed);
+
+			Triangle2D t = Triangle2D(v1, v2,v3, tri.getM(), tri.getDistance(focuspoint));
+			
+			if (!failed)
 			{
-				drawBuffer.push_back(Triangle2D(castTo2D(tri.getV1()), castTo2D(tri.getV2()), castTo2D(tri.getV3()), tri.getM(), tri.getDistance(focuspoint)));
-			}
-			catch (const char* e)
-			{
-				//printf("he");
+				drawBuffer.push_back(t);
 			}
 			
 		}

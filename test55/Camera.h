@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 #include <vector>
+#include <sstream>
+#include <algorithm>
 
 #include "Vector3D.h"
 #include "Transform.h"
@@ -22,7 +24,7 @@ class Camera
 	std::vector<Triangle2D> drawBuffer;
 	SDL_Renderer* renderer;
 	InputHandler* ih;
-	Vector2D castTo2D(Vector3D v);
+	Vector2D castTo2D(Vector3D v, bool* failed);
 	void updateRotation();
 	void movement();
 

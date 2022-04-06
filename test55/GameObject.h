@@ -10,7 +10,7 @@ class GameObject
 	Mesh mesh;
 
 public:
-	GameObject(Transform _transform);
+	GameObject(Transform _transform,double panesize);
 	GameObject(Transform _transform, Mesh _mesh);
 	void action();
 	void draw(Camera* camera);

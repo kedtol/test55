@@ -25,3 +25,9 @@ double Triangle3D::getDistance(Vector3D v)
 
 	return 0;
 }
+
+Vector3D Triangle3D::getWpoint() const 
+{
+	Vector3D v = Vector3D((v1 + v2 + v3) * (1. / 3.));
+	return v;
+}

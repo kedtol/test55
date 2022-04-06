@@ -28,7 +28,6 @@ void Transform::rotateSurface(Surface& surface,double focaldistance,Vector3D foc
 {
 	Vector3D surfPos = rotation.getI() * focaldistance + focuspoint;
 	Vector3D surfNormal = rotation.getI();
-	//surface = Surface(Vector3D(surfPos.getX(),surfPos.getZ(),surfPos.getY()), Vector3D(surfNormal.getX(), surfNormal.getZ(), surfNormal.getY()));
 	surface = Surface(rotation.getI() * focaldistance + focuspoint, rotation.getI());
 }
 

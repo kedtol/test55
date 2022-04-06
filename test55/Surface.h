@@ -13,6 +13,6 @@ public:
 	Vector3D getNormal() const { return normal; }
 	Vector3D getPos() const { return position; }
 
-	Vector3D intersect(Line line) const;
+	Vector3D intersect(Line line, bool* failed) const;
 
 };

@@ -13,4 +13,5 @@ class Triangle2D
 public:
 	Triangle2D(Vector2D _v1, Vector2D _v2, Vector2D _v3,Material _m, double _d);
 	void draw(SDL_Renderer* renderer);
+	double getD() { return d; }
 };

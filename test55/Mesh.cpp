@@ -28,10 +28,20 @@ Mesh::Mesh(double paneSize)
 	normalArray.push_back(Vector3D(0, 0, -1));
 	normalArray.push_back(Vector3D(0, 0, -1));
 
-	Material m = Material('z',0,0);
+	Material m;
+	char cr = 255;
+	char cg = 255;
+	char cb = 255;
 
 	for (int i = 0; i < 12; i++)
 	{
+		if (i % 2 == 0)
+		{
+			char cr = 255/8*(rand() % 5+2);
+			char cg = 255 / 8 *( rand() % 5+2);
+			char cb = 255 / 8 *( rand() % 5+2);
+			m = Material(cr, cg, cb);
+		}
 		bakedMaterialArray.push_back(m);
 	}
 
@@ -47,7 +57,7 @@ Mesh::Mesh(Mesh& mesh, Matrix3x3 matrix, Vector3D position)
 		vertexArray.push_back(mesh.loadVertex(i).applyMatrix(matrix)+position);
 
 	for (size_t i = 0; i < mesh.getTriCount(); i++)
-		normalArray.push_back(mesh.loadNormal(i).applyMatrix(matrix) + position);
+		normalArray.push_back(mesh.loadNormal(i).applyMatrix(matrix));
 
 	for (size_t i = 0; i < mesh.getTriCount(); i++)
 		bakedMaterialArray.push_back(mesh.loadBakedMaterial(i));

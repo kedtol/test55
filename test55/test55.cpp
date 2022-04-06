@@ -2,8 +2,10 @@
 //
 #define SDL_MAIN_HANDLED
 #include <iostream>
+#include <time.h>
 #include <SDL.h>
 #include "Program.h"
+
 
 void sdl_init(char const* felirat, int szeles, int magas, SDL_Window** pwindow, SDL_Renderer** prenderer)
 {
@@ -46,6 +48,7 @@ Uint32 logikaIdozit(Uint32 ms, void* param)
 
 int main(int argc, char* argv[])
 {
+    srand(time(0));
 
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -54,7 +57,7 @@ int main(int argc, char* argv[])
     sdl_init("test5", ww, wh, &window, &renderer);
 
    
-    SDL_TimerID id1 = SDL_AddTimer(15, rajzIdozit, NULL);
+    SDL_TimerID id1 = SDL_AddTimer(20, rajzIdozit, NULL);
     SDL_TimerID id2 = SDL_AddTimer(10, logikaIdozit, NULL);
 
     bool quit = false;
@@ -198,10 +201,10 @@ int main(int argc, char* argv[])
 
 
         }
-
+       
 
         
-        SDL_RenderPresent(renderer);
+       // SDL_RenderPresent(renderer);
     }
     SDL_RemoveTimer(id1);
     SDL_RemoveTimer(id2);
