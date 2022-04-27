@@ -1,6 +1,8 @@
 #ifndef __VECTOR2D_H__
 #define __VECTOR2D_H__
 #include <math.h>
+#include <iostream>
+
 class Vector2D
 {
 	double x, y;
@@ -12,7 +14,9 @@ public:
 	double getX() const { return x; }
 	double getY() const { return y; }
 
+	void randomGradient();
 	double getLength() const;
+	double dot(Vector2D v) const;
 
 	void operator+=(Vector2D v);
 	Vector2D& operator=(const Vector2D& v);

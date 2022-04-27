@@ -10,7 +10,8 @@ class GameObject
 	Mesh mesh;
 
 public:
-	GameObject(Transform _transform,double panesize);
+	GameObject(Transform _transform,double panesize); // cube
+	GameObject(Transform _transform, double panesize, int w, int h); // terrain
 	GameObject(Transform _transform, Mesh _mesh);
 	void action();
 	void draw(Camera* camera);

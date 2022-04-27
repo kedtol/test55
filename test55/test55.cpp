@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     sdl_init("test5", ww, wh, &window, &renderer);
 
    
-    SDL_TimerID id1 = SDL_AddTimer(20, rajzIdozit, NULL);
+    SDL_TimerID id1 = SDL_AddTimer(30, rajzIdozit, NULL);
     SDL_TimerID id2 = SDL_AddTimer(10, logikaIdozit, NULL);
 
     bool quit = false;

@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="load.c" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix3x3.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="SDL2_imageFilter.c" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="test55.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -167,7 +169,10 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="load.h" />
+    <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Material.h" />

@@ -1,7 +1,13 @@
 #include "Camera.h"
-#include "Line.h"
 
 
+bool compare(Triangle2D t1, Triangle2D t2)
+{
+	if (t1.getD() > t2.getD())
+		return true;
+	else
+		return false;
+}
 
 Vector2D Camera::castTo2D(Vector3D v, bool* failed)
 {
@@ -21,12 +27,10 @@ Vector2D Camera::castTo2D(Vector3D v, bool* failed)
 		else
 			*failed = true;
 	}
-		// no clipping?
+
+	// no clipping?
 	
-		
-	//else
-	//	throw "cant cast";
-		return Vector2D();
+	return Vector2D();
 }
 
 Camera::Camera(SDL_Renderer* _renderer, InputHandler* _ih)
@@ -124,14 +128,6 @@ void Camera::action()
 	updateRotation();
 }
 
-bool compare(Triangle2D t1, Triangle2D t2)
-{
-	if (t1.getD() > t2.getD())
-		return true;
-	else
-		return false;
-}
-
 void Camera::draw()
 {
 	std::sort(drawBuffer.begin(), drawBuffer.end(), compare);
@@ -160,12 +156,13 @@ void Camera::loadDrawBuffer(Mesh mesh)
 			size_t vo = 0; // every third vertex
 			if (sol < mesh.getTriCount())
 				vo = sol; //size_t scam 
-			int index = mesh.shareIndex()[i];
 			
+			int normalIndex = mesh.shareNormalIndex()[vo]; // get the normal buffer index
+
 			Triangle3D tri = Triangle3D(mesh.loadVertex(mesh.shareIndex()[i]-1), mesh.loadVertex(mesh.shareIndex()[i+1] - 1), mesh.loadVertex(mesh.shareIndex()[i+2] - 1),mesh.loadBakedMaterial(vo));
 			
 			// -CULLING-
-			Vector3D normal = mesh.loadNormal(vo); // normalbuffer stores normal vectors/face
+			Vector3D normal = mesh.loadNormal(normalIndex-1); // normalbuffer stores normal vectors/face
 			if (normal.dot(focuspoint - tri.getWpoint()) < 0)
 				continue;
 
