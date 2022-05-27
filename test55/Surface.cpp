@@ -25,7 +25,7 @@ Vector3D Surface::intersect(Line line,bool* failed) const // only works with try
 	}
 	else
 	{
-		*failed = true; // todo: exception class
+		*failed = true;
 	}
 
 	if (t > -0.99)

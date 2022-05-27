@@ -1,5 +1,11 @@
 #include "GameObject.h"
 
+GameObject::GameObject(Transform _transform)
+{
+	transform = _transform;
+	mesh = Mesh();
+}
+
 GameObject::GameObject(Transform _transform, double panesize)
 {
 	transform = _transform;

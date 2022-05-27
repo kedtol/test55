@@ -35,6 +35,11 @@ double Vector3D::dot(Vector3D v) const
 	return x * v.getX() + y * v.getY() + z * v.getZ();
 }
 
+Vector3D Vector3D::cross(Vector3D v) const
+{
+	return Vector3D(y * v.getZ() - z * v.getY(), z * v.getX() - x * v.getZ(), x * v.getY() - y * v.getX());
+}
+
 Vector3D Vector3D::applyMatrix(Matrix3x3& matrix)
 {
 	double x_ = getX() * matrix.getI().getX() + getY() * matrix.getJ().getX() + getZ() * matrix.getK().getX();

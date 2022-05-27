@@ -1,32 +1,56 @@
 // test5.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #define SDL_MAIN_HANDLED
+#include <GL/glew.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
+#include <GL/glut.h>
 #include <iostream>
 #include <time.h>
-#include <SDL.h>
+
 #include "Program.h"
 
+void initGL()
+{
+    //Initialize Projection Matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GLenum err = glewInit();
 
-void sdl_init(char const* felirat, int szeles, int magas, SDL_Window** pwindow, SDL_Renderer** prenderer)
+    //Initialize Modelview Matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    //Initialize clear color
+    glClearColor(0.f, 0.f, 0.f, 1.f);
+}
+
+void sdl_init(char const* felirat, int szeles, int magas, SDL_Window** pwindow, SDL_Renderer** prenderer, SDL_GLContext* gcontext)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         SDL_Log("Nem indithato az SDL: %s", SDL_GetError());
         exit(1);
     }
-    SDL_Window* window = SDL_CreateWindow(felirat, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, szeles, magas, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_Window* window = SDL_CreateWindow(felirat, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, szeles, magas, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (window == NULL) {
         SDL_Log("Nem hozhato letre az ablak: %s", SDL_GetError());
         exit(1);
     }
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
         SDL_Log("Nem hozhato letre a megjelenito: %s", SDL_GetError());
         exit(1);
     }
     SDL_RenderClear(renderer);
-
+    *gcontext = SDL_GL_CreateContext(window);
     *pwindow = window;
-    *prenderer = renderer;
+
+    //Initialize OpenGL
+    initGL();
+  
+    //*prenderer = renderer;
 }
 
 
@@ -52,26 +76,26 @@ int main(int argc, char* argv[])
 
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_GLContext gcontext;
     int ww = 1024;
     int wh = 768;
-    sdl_init("test5", ww, wh, &window, &renderer);
+    sdl_init("test5", ww, wh, &window, &renderer,&gcontext);
 
    
-    SDL_TimerID id1 = SDL_AddTimer(30, rajzIdozit, NULL);
+    SDL_TimerID id1 = SDL_AddTimer(16, rajzIdozit, NULL);
     SDL_TimerID id2 = SDL_AddTimer(10, logikaIdozit, NULL);
 
     bool quit = false;
     bool console = false;
     InputHandler ih = InputHandler();
-    Program program = Program(renderer,&ih);
+    Program program = Program(&gcontext,&ih);
     
 
     while (!quit)
     {
         SDL_Event event;
         SDL_WaitEvent(&event);
-       
-        int a;
+
         switch (event.type)
         {
         case SDL_QUIT:
@@ -187,10 +211,13 @@ int main(int argc, char* argv[])
 
         
         case SDL_USEREVENT:
-            SDL_RenderClear(renderer);
+            //SDL_RenderClear(renderer);
+           
+           // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+           // SDL_RenderPresent(renderer);
+            glClear(GL_COLOR_BUFFER_BIT);
             program.drawCycle();
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderPresent(renderer);
+            SDL_GL_SwapWindow(window);
         break;
 
         case SDL_USEREVENT + 1:

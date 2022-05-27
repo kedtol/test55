@@ -16,7 +16,10 @@ public:
 
 	void randomGradient();
 	double getLength() const;
+	Vector2D getNormal() const { return Vector2D(-y, x); }
 	double dot(Vector2D v) const;
+	bool insideRect(const Vector2D&, const Vector2D&) const;
+	Vector2D castGL(Vector2D v);
 
 	void operator+=(Vector2D v);
 	Vector2D& operator=(const Vector2D& v);

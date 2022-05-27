@@ -78,13 +78,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\glew\lib\Release\x64;D:\Saves\Projects\C,C++\test55\test55\glut\lib;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\include;D:\Saves\Projects\C,C++\test55\test55\glew\include;D:\Saves\Projects\C,C++\test55\test55\glut\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\include;D:\Saves\Projects\C,C++\test55\test55\glew\include;D:\Saves\Projects\C,C++\test55\test55\glut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\glew\lib\Release\x64;D:\Saves\Projects\C,C++\test55\test55\glut\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,7 +124,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2main.lib;glew32.lib;glew32s.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,7 +141,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2main.lib;glew32.lib;glew32s.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -158,6 +158,7 @@
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
+    <ClCompile Include="Line2D.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="test55.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Line2D.h" />
     <ClInclude Include="load.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="InputHandler.h" />

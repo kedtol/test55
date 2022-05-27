@@ -18,6 +18,7 @@ public:
 
 	double getLength() const;
 	double dot(Vector3D v) const;
+	Vector3D cross(Vector3D v) const;
 
 	Vector3D applyMatrix(Matrix3x3& matrix);
 	void operator+=(Vector3D v);

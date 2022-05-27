@@ -21,7 +21,7 @@ class Mesh
 	size_t normalIndexBufferSize;
 	size_t indexBufferSize;
 public:
-	Mesh() { triMode = true;};
+	Mesh();
 	Mesh(double paneSize); //cube
 	Mesh(double paneSize,int w, int h); //terrain
 	Mesh(Mesh& mesh, Matrix3x3 matrix, Vector3D position);

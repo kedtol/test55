@@ -75,6 +75,9 @@
     <ClCompile Include="load.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Line2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -144,6 +147,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="load.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Line2D.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -33,21 +33,22 @@ Vector2D Camera::castTo2D(Vector3D v, bool* failed)
 	return Vector2D();
 }
 
-Camera::Camera(SDL_Renderer* _renderer, InputHandler* _ih)
+Camera::Camera(SDL_GLContext* _gcontext, InputHandler* _ih)
 {
-	renderer = _renderer;
-	surfaceWidth = 1024;
-	surfaceHeight = 768;
+	gcontext = _gcontext;
+	surfaceWidth = 512;
+	surfaceHeight = 384;
 	focaldistance = 300;
 	viewportScale = 1;
 	viewport = Vector2D();
 	transform = Transform();
-	transform.addPitch(0.7);
-	transform.addYaw(0.7);
+	transform.addPitch(0);
+	transform.addYaw(0);
 	focuspoint = Vector3D(0, 0, 0);
 	surface = Surface(Vector3D(), focuspoint);
 	drawBuffer = std::vector<Triangle2D>();
 	ih = _ih;
+	buildShader();
 }
 
 void Camera::updateRotation()
@@ -60,55 +61,55 @@ void Camera::movement()
 {
 	if (ih->isButtonHold(6))
 	{
-		focuspoint += transform.getRot().getJ() * -10;
+		focuspoint += transform.getRot().getJ() * -20;
 
 	}
 
 	if (ih->isButtonHold(7))
 	{
-		focuspoint += transform.getRot().getJ() * 10;
+		focuspoint += transform.getRot().getJ() * 20;
 
 	}
 
 	if (ih->isButtonHold(8))
 	{
-		focuspoint += transform.getRot().getI() * 10;
+		focuspoint += transform.getRot().getI() * 20;
 		
 	}
 
 	if (ih->isButtonHold(9))
 	{
-		focuspoint += transform.getRot().getI() * -10;
+		focuspoint += transform.getRot().getI() * -20;
 		
 	}
 
 	if (ih->isButtonHold(0))
 	{
-		transform.addYaw(-0.04);
+		transform.addYaw(0.03);
 	}
 
 	if (ih->isButtonHold(1))
 	{
-		transform.addYaw(0.04);
+		transform.addYaw(-0.03);
 		
 	}
 
 	if (ih->isButtonHold(2))
 	{
-		transform.addPitch(-0.04);
+		transform.addPitch(0.03);
 		
 	}
 
 	if (ih->isButtonHold(3))
 	{
-		transform.addPitch(+0.04);
+		transform.addPitch(-0.03);
 		
 	}
 
 	if (ih->isButtonHold(10))
 	{
 
-		focuspoint += transform.getRot().getK() * -10;
+		focuspoint += transform.getRot().getK() * 15;
 
 
 	}
@@ -116,7 +117,7 @@ void Camera::movement()
 	if (ih->isButtonHold(11))
 	{
 
-		focuspoint += transform.getRot().getK() * +10;
+		focuspoint += transform.getRot().getK() * -15;
 
 
 	}
@@ -128,18 +129,65 @@ void Camera::action()
 	updateRotation();
 }
 
+void Camera::buildShader()
+{
+	const GLchar* vertexSource =
+		"#version 330 core\n"
+		"in vec2 position;"
+		"in vec3 color;"
+		"out vec3 Color;"
+		"void main()"
+		"{"
+		"    gl_Position = vec4(position, 0.0, 1.0);"
+		"    Color = color;"
+		"}";
+	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(m_vertexShader, 1, &vertexSource, NULL);
+	glCompileShader(m_vertexShader);
+
+	const GLchar* fragmentSource =
+		"#version 330 core\n"
+		"in vec3 Color;"
+		"out vec4 outColor;"
+		"void main()"
+		"{"
+		"    outColor = vec4(Color, 1.0f);"
+		"}";
+	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(m_fragmentShader, 1, &fragmentSource, NULL);
+	glCompileShader(m_fragmentShader);
+
+	m_shaderProgram = glCreateProgram();
+	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_fragmentShader);
+	glBindFragDataLocation(m_shaderProgram, 0, "outColor");
+	glLinkProgram(m_shaderProgram);
+
+
+	GLint posAttrib = glGetAttribLocation(m_shaderProgram, "position");
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
+	GLint colAttrib = glGetAttribLocation(m_shaderProgram, "color");
+	glEnableVertexAttribArray(colAttrib);
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
+		(void*)(2 * sizeof(GLfloat)));
+}
+
 void Camera::draw()
 {
+	//SDL_RenderSetScale(renderer, 2, 2);
 	std::sort(drawBuffer.begin(), drawBuffer.end(), compare);
+	glUseProgram(m_shaderProgram);
 	for (size_t i = 0; i < drawBuffer.size(); i++)
 	{
-		drawBuffer[i].draw(renderer);
+		drawBuffer[i].render(gcontext);
 	}
+	glUseProgram(0);
 	std::stringstream strs;
 	strs << drawBuffer.size();
 	std::string temp_str = strs.str();
 	const char* char_type = (char*)temp_str.c_str();
-	stringRGBA(renderer, 10, 10, char_type, 255, 255, 255, 255);
+	//stringRGBA(renderer, 10, 10, char_type, 255, 255, 255, 255);
 	drawBuffer.clear();
 	drawBuffer.shrink_to_fit();
 }
@@ -159,7 +207,7 @@ void Camera::loadDrawBuffer(Mesh mesh)
 			
 			int normalIndex = mesh.shareNormalIndex()[vo]; // get the normal buffer index
 
-			Triangle3D tri = Triangle3D(mesh.loadVertex(mesh.shareIndex()[i]-1), mesh.loadVertex(mesh.shareIndex()[i+1] - 1), mesh.loadVertex(mesh.shareIndex()[i+2] - 1),mesh.loadBakedMaterial(vo));
+			Triangle3D tri = Triangle3D(mesh.loadVertex(mesh.shareIndex()[i]-1), mesh.loadVertex(mesh.shareIndex()[i+1] - 1), mesh.loadVertex(mesh.shareIndex()[i+2] - 1), mesh.loadBakedMaterial(mesh.shareIndex()[i] - 1));
 			
 			// -CULLING-
 			Vector3D normal = mesh.loadNormal(normalIndex-1); // normalbuffer stores normal vectors/face
@@ -171,8 +219,10 @@ void Camera::loadDrawBuffer(Mesh mesh)
 			Vector2D v1 = castTo2D(tri.getV1(), &failed);
 			Vector2D v2 = castTo2D(tri.getV2(), &failed);
 			Vector2D v3 = castTo2D(tri.getV3(), &failed);
-
-			Triangle2D t = Triangle2D(v1, v2,v3, tri.getM(), tri.getDistance(focuspoint));
+			Material m1 = mesh.loadBakedMaterial(mesh.shareIndex()[i] - 1);
+			Material m2 = mesh.loadBakedMaterial(mesh.shareIndex()[i+1] - 1);
+			Material m3 = mesh.loadBakedMaterial(mesh.shareIndex()[i+2] - 1);
+			Triangle2D t = Triangle2D(v1, v2,v3, m1,m2,m3, tri.getDistance(focuspoint));
 			
 			if (!failed)
 			{
