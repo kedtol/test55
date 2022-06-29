@@ -42,6 +42,9 @@ public:
 	void addVertex(Vector3D v) { vertexArray.push_back(v); }
 	void addNormal(Vector3D n) { normalArray.push_back(n); }
 	void addBakedMaterial(Material m) { bakedMaterialArray.push_back(m); }
+
+	void setIndexSize(size_t ibs) { indexBufferSize = ibs; }
+	void setNormalIndexSize(size_t nibs) { normalIndexBufferSize = nibs; }
 	
 	bool getTriMode() const { return triMode; }
 };

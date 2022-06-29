@@ -29,10 +29,10 @@ void Triangle2D::draw(SDL_Renderer* renderer)
 		vx[i] = polygon[i-1].getX();
 		vy[i] = polygon[i - 1].getY();
 	}*/
-	if (!v1out && !v2out && !v3out)
-		filledTrigonRGBA(renderer, v1.getX(), v1.getY(), v2.getX(), v2.getY(), v3.getX(), v3.getY(), m.getR(), m.getG(), m.getB(), 255);
-	else
-	{
+	//if (!v1out && !v2out && !v3out)
+		//filledTrigonRGBA(renderer, v1.getX(), v1.getY(), v2.getX(), v2.getY(), v3.getX(), v3.getY(), m.getR(), m.getG(), m.getB(), 255);
+	//else
+	//{
 		//rectangleRGBA(renderer, screen1.getX(), screen1.getY(), screen2.getX(), screen2.getY(), m.getR(), m.getG(), m.getB(), 255);
 
 		/*bool failed = false;
@@ -117,7 +117,7 @@ void Triangle2D::draw(SDL_Renderer* renderer)
 		delete bit2p;
 		delete cit1p;
 		delete cit2p;*/
-	}
+	//}
 		
 	//stringRGBA(renderer, v1.getX(), v1.getY(), "v1", 0, 255, 0, 255);
 	//stringRGBA(renderer, v2.getX(), v2.getY(), "v2", 0, 255, 255, 255);
@@ -151,7 +151,7 @@ void Triangle2D::render(SDL_GLContext* gcontext)
 
 	//if (!v1out && !v2out && !v3out)
 	//{
-	//}
+	
 
 		glBegin(GL_TRIANGLES);
 		
@@ -171,7 +171,7 @@ void Triangle2D::render(SDL_GLContext* gcontext)
 
 		glVertex2f(v3_.getX(), v3_.getY());
 		glEnd();
-	
+	//}
 		// LINE -> POINT RASTER (VERY INEFFICIENT)
 		/*Vector2D a = v1 - v2;
 		for (double i = 0; i < 1; i += 0.05)

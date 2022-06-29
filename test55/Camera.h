@@ -22,6 +22,7 @@ class Camera
 	Vector3D focuspoint;
 	Surface surface;
 	Transform transform;
+	double speed = 60;
 	double focaldistance;
 	double surfaceWidth, surfaceHeight, viewportScale;
 	Vector2D viewport; // renderer resolution wont impact performance (the engine only casts points)

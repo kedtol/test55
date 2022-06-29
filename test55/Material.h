@@ -1,12 +1,17 @@
 #pragma once
+#include "Light.h"
+
 class Material
 {
-	char r, g, b;
+	Color color;
+	Color baseColor;
 	// i cant really write more... the engine only knows the 3 points of a tri and a color now
 public:
-	Material(){}
-	Material(char r, char g, char b);
-	char getR() { return r; }
-	char getG() { return g; }
-	char getB() { return b; }
+	Material() { color = Color(); }
+	Material(Color c) { color = c; }
+	
+	char getR() { return color.getR(); }
+	char getG() { return color.getG(); }
+	char getB() { return color.getB(); }
+	void bakeLight(Light l,Vector3D pos);
 };

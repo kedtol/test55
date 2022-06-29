@@ -4,7 +4,7 @@
 #include <SDL_opengl.h>
 #include <GL/glut.h>
 #include <vector>
-#include "SDL2_gfxPrimitives.h"
+//#include "SDL2_gfxPrimitives.h"
 #include "Vector2D.h"
 #include "Material.h"
 #include "Line2D.h"

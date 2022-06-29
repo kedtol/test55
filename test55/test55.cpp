@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <SDL_thread.h>
 #include <GL/glut.h>
 #include <iostream>
 #include <time.h>
@@ -82,8 +83,8 @@ int main(int argc, char* argv[])
     sdl_init("test5", ww, wh, &window, &renderer,&gcontext);
 
    
-    SDL_TimerID id1 = SDL_AddTimer(16, rajzIdozit, NULL);
-    SDL_TimerID id2 = SDL_AddTimer(10, logikaIdozit, NULL);
+    SDL_TimerID id1 = SDL_AddTimer(20, rajzIdozit, NULL);
+    SDL_TimerID id2 = SDL_AddTimer(8, logikaIdozit, NULL);
 
     bool quit = false;
     bool console = false;
@@ -211,11 +212,9 @@ int main(int argc, char* argv[])
 
         
         case SDL_USEREVENT:
-            //SDL_RenderClear(renderer);
-           
-           // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-           // SDL_RenderPresent(renderer);
+         
             glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(0.4f, 0.4f, 1.0f, 1.0f);
             program.drawCycle();
             SDL_GL_SwapWindow(window);
         break;
@@ -229,7 +228,7 @@ int main(int argc, char* argv[])
 
         }
        
-
+      
         
        // SDL_RenderPresent(renderer);
     }

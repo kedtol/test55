@@ -1,7 +1,5 @@
 #include "Material.h"
-Material::Material(char _r, char _b, char _g)
+void Material::bakeLight(Light l, Vector3D pos)
 {
-	r = _r;
-	b = _b;
-	g = _g;
+	
 }

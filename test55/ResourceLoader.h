@@ -5,9 +5,9 @@
 #include <iostream>
 #include <fstream>
 //#include <stdio.h>
-//#include "dirent.h"
+#include "dirent.h"
 #include "Mesh.h"
-//#include "load.h"
+#include "load.h"
 //#include <string_view>
 //#include <string>
 
@@ -18,7 +18,7 @@ class ResourceLoader
 	void loadMaterials(char* name);
 public:
 	void loadMeshes();
-	
+	Mesh getMesh(size_t i) { return meshes[i]; }
 };
 
 

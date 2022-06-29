@@ -42,8 +42,8 @@ Camera::Camera(SDL_GLContext* _gcontext, InputHandler* _ih)
 	viewportScale = 1;
 	viewport = Vector2D();
 	transform = Transform();
-	transform.addPitch(0);
-	transform.addYaw(0);
+	transform.addPitch(3.14);
+	transform.addYaw(3.14);
 	focuspoint = Vector3D(0, 0, 0);
 	surface = Surface(Vector3D(), focuspoint);
 	drawBuffer = std::vector<Triangle2D>();
@@ -61,25 +61,25 @@ void Camera::movement()
 {
 	if (ih->isButtonHold(6))
 	{
-		focuspoint += transform.getRot().getJ() * -20;
+		focuspoint += transform.getRot().getJ() * -speed;
 
 	}
 
 	if (ih->isButtonHold(7))
 	{
-		focuspoint += transform.getRot().getJ() * 20;
+		focuspoint += transform.getRot().getJ() * speed;
 
 	}
 
 	if (ih->isButtonHold(8))
 	{
-		focuspoint += transform.getRot().getI() * 20;
+		focuspoint += transform.getRot().getI() * speed;
 		
 	}
 
 	if (ih->isButtonHold(9))
 	{
-		focuspoint += transform.getRot().getI() * -20;
+		focuspoint += transform.getRot().getI() * -speed;
 		
 	}
 
@@ -109,7 +109,7 @@ void Camera::movement()
 	if (ih->isButtonHold(10))
 	{
 
-		focuspoint += transform.getRot().getK() * 15;
+		focuspoint += transform.getRot().getK() * speed;
 
 
 	}
@@ -117,7 +117,7 @@ void Camera::movement()
 	if (ih->isButtonHold(11))
 	{
 
-		focuspoint += transform.getRot().getK() * -15;
+		focuspoint += transform.getRot().getK() * -speed;
 
 
 	}
@@ -153,6 +153,29 @@ void Camera::buildShader()
 		"{"
 		"    outColor = vec4(Color, 1.0f);"
 		"}";
+	/*"#version 330 core\n"
+	"uniform float maxIterations;"
+	"in vec2 fragCoord;"
+	"out vec4 outColor;"
+	"void main()"
+	"{"
+	"    outColor = vec4(iterateMandelbrot(fragCoord),0f,0f,1.0f);"
+	"}"
+	"vec2 squareImaginary(vec2 number) {"
+	"return vec2("
+	"	pow(number.x, 2) - pow(number.y, 2),"
+	"	2 * number.x * number.y"
+	");"
+	"}"
+	"float iterateMandelbrot(vec2 coord) {"
+	"vec2 z = vec2(0, 0);"
+	"for (int i = 0;i < maxIterations;i++) {"
+	"	z = squareImaginary(z) + coord;"
+	"	if (length(z) > 2) return i / maxIterations;"
+	"}"
+	"return maxIterations;"
+	"}";*/
+
 	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(m_fragmentShader, 1, &fragmentSource, NULL);
 	glCompileShader(m_fragmentShader);
@@ -163,21 +186,24 @@ void Camera::buildShader()
 	glBindFragDataLocation(m_shaderProgram, 0, "outColor");
 	glLinkProgram(m_shaderProgram);
 
+	GLint myUniformLocation = glGetUniformLocation(m_shaderProgram, "maxIterations");
+	glUniform1f(myUniformLocation, 10);
 
 	GLint posAttrib = glGetAttribLocation(m_shaderProgram, "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
 	GLint colAttrib = glGetAttribLocation(m_shaderProgram, "color");
 	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
-		(void*)(2 * sizeof(GLfloat)));
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 }
+
 
 void Camera::draw()
 {
 	//SDL_RenderSetScale(renderer, 2, 2);
 	std::sort(drawBuffer.begin(), drawBuffer.end(), compare);
 	glUseProgram(m_shaderProgram);
+	
 	for (size_t i = 0; i < drawBuffer.size(); i++)
 	{
 		drawBuffer[i].render(gcontext);

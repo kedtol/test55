@@ -3,7 +3,7 @@
 Mesh::Mesh()
 {
 	triMode = true;
-	materialBuffer = NULL;
+	/*materialBuffer = NULL;
 	vertexArray.push_back(Vector3D(-5000, 0, 0));
 	vertexArray.push_back(Vector3D(5000, 0, 0));
 	vertexArray.push_back(Vector3D(0, 5000, 0));
@@ -20,7 +20,7 @@ Mesh::Mesh()
 	bakedMaterialArray.push_back(Material(0, 255, 0));
 	bakedMaterialArray.push_back(Material(0, 0, 255));
 
-
+	*/
 }
 
 Mesh::Mesh(double paneSize)
@@ -54,26 +54,18 @@ Mesh::Mesh(double paneSize)
 	char cg = 255;
 	char cb = 255;
 
-	/*for (int i = 0; i < 8; i++)
-	 {
-		//if (i % 2 == 0)
-		//{
-			char cr = 255/8*(rand() % 5+2);
-			char cg = 255 / 8 *( rand() % 5+2);
-			char cb = 255 / 8 *( rand() % 5+2);
-			m = Material(cr, cg, cb);
-		//}
-		bakedMaterialArray.push_back(m);
-	}*/
+	for (int i = 0; i < 8; i++)
+	{
 
-	bakedMaterialArray.push_back(Material(255, 0, 0));
-	bakedMaterialArray.push_back(Material(0, 255, 0));
-	bakedMaterialArray.push_back(Material(0, 0, 255));
-	bakedMaterialArray.push_back(Material(255, 255, 0));
-	bakedMaterialArray.push_back(Material(255, 0, 255));
-	bakedMaterialArray.push_back(Material(255, 255, 255));
-	bakedMaterialArray.push_back(Material(0, 0, 0));
-	bakedMaterialArray.push_back(Material(0, 255, 255));
+		char cr = 255/8*(rand() % 5+20);
+		char cg = 255 / 8 *( rand() % 5+20);
+		char cb = 255 / 8 *( rand() % 5+20);
+		m = Material(Color(cr, cg, cb));
+
+		bakedMaterialArray.push_back(m);
+	}
+
+	
 	
 
 }
@@ -159,7 +151,7 @@ Mesh::Mesh(double paneSize, int w, int h)
 				cg = 240;
 				cb = 240;
 			}
-			m = Material(cr, cb, cg);
+			m = Material(Color(cr,cg,cb));
 
 			bakedMaterialArray.push_back(m);
 		}
@@ -189,7 +181,7 @@ Mesh::Mesh(double paneSize, int w, int h)
 		char cr = 255 / 8 * (rand() % 3 + 3);
 		char cg = 255 / 8 * (rand() % 3 + 3);
 		char cb = 255 / 8 * (rand() % 3 + 3);
-		m = Material(cr, cb, cg);
+		m = Material(Color(cr, cg, cb));
 
 		bakedMaterialArray.push_back(m);
 	}

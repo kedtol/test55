@@ -21,9 +21,6 @@
     <ClCompile Include="SDL2_framerate.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SDL2_gfxPrimitives.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SDL2_imageFilter.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,6 +147,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Line2D.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
