@@ -16,4 +16,5 @@ public:
 	GameObject(Transform _transform, Mesh _mesh);
 	void action();
 	void draw(Camera* camera);
+	Mesh* getMesh() { return &mesh; }
 };

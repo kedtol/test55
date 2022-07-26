@@ -78,13 +78,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\glew\lib\Release\x64;D:\Saves\Projects\C,C++\test55\test55\glut\lib;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\include;D:\Saves\Projects\C,C++\test55\test55\glew\include;D:\Saves\Projects\C,C++\test55\test55\glut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)SDL2-2.0.20\lib\x64;$(ProjectDir)SDL2_image-2.0.5\lib\x64;$(ProjectDir)SDL2_mixer-2.0.4\lib\x64;$(ProjectDir)glut\lib;$(ProjectDir)glew\lib\Release\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SDL2-2.0.20\include;$(ProjectDir)SDL2_image-2.0.5\include;$(ProjectDir)SDL2_mixer-2.0.4\include;$(ProjectDir)glut\include;$(ProjectDir)glew\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\include;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\include;D:\Saves\Projects\C,C++\test55\test55\glew\include;D:\Saves\Projects\C,C++\test55\test55\glut\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Saves\Projects\C,C++\test55\test55\SDL2-2.0.20\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_image-2.0.5\lib\x64;D:\Saves\Projects\C,C++\test55\test55\SDL2_mixer-2.0.4\lib\x64;D:\Saves\Projects\C,C++\test55\test55\glew\lib\Release\x64;D:\Saves\Projects\C,C++\test55\test55\glut\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(ProjectDir)SDL2-2.0.20\include;$(ProjectDir)SDL2_image-2.0.5\include;$(ProjectDir)SDL2_mixer-2.0.4\include;$(ProjectDir)glut\include;$(ProjectDir)glew\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)SDL2-2.0.20\lib\x64;$(ProjectDir)SDL2_image-2.0.5\lib\x64;$(ProjectDir)SDL2_mixer-2.0.4\lib\x64;$(ProjectDir)glut\lib;$(ProjectDir)glew\lib\Release\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="load.c" />
     <ClCompile Include="Material.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="Line2D.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="test55.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -199,6 +201,5 @@
     <ClInclude Include="Vector3D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

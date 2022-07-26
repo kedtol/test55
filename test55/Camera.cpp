@@ -197,13 +197,13 @@ void Camera::buildShader()
 	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 }
 
-
 void Camera::draw()
 {
 	//SDL_RenderSetScale(renderer, 2, 2);
 	std::sort(drawBuffer.begin(), drawBuffer.end(), compare);
 	glUseProgram(m_shaderProgram);
-	
+	std::cout << drawBuffer.size() << std::endl;
+
 	for (size_t i = 0; i < drawBuffer.size(); i++)
 	{
 		drawBuffer[i].render(gcontext);
@@ -225,36 +225,46 @@ void Camera::loadDrawBuffer(Mesh mesh)
 		for (size_t i = 0; i < mesh.getIndexBufferSize()-2; i+=3)
 		{
 			// -READING-
-			int iterator = static_cast<int>(i);
-			int sol = iterator / 3;
-			size_t vo = 0; // every third vertex
-			if (sol < mesh.getTriCount())
-				vo = sol; //size_t scam 
+				int iterator = static_cast<int>(i);
+				int sol = iterator / 3;
+				size_t vo = 0; // every third vertex
+				if (sol < mesh.getTriCount())
+					vo = sol; //size_t scam 
 			
-			int normalIndex = mesh.shareNormalIndex()[vo]; // get the normal buffer index
+				int normalIndex = mesh.shareNormalIndex()[vo]; // get the normal buffer index
 
-			Triangle3D tri = Triangle3D(mesh.loadVertex(mesh.shareIndex()[i]-1), mesh.loadVertex(mesh.shareIndex()[i+1] - 1), mesh.loadVertex(mesh.shareIndex()[i+2] - 1), mesh.loadBakedMaterial(mesh.shareIndex()[i] - 1));
-			
+				Triangle3D tri = Triangle3D(mesh.loadVertex(mesh.shareIndex()[i]-1), mesh.loadVertex(mesh.shareIndex()[i+1] - 1), mesh.loadVertex(mesh.shareIndex()[i+2] - 1), Material());
+			//--
+
 			// -CULLING-
-			Vector3D normal = mesh.loadNormal(normalIndex-1); // normalbuffer stores normal vectors/face
-			if (normal.dot(focuspoint - tri.getWpoint()) < 0)
-				continue;
+				Vector3D normal = mesh.loadNormal(normalIndex-1); // normalbuffer stores normal vectors/face
+				if (normal.dot(focuspoint - tri.getWpoint()) < 0)
+					continue;
+			//--
 
 			// -CASTING-
-			bool failed = false;
-			Vector2D v1 = castTo2D(tri.getV1(), &failed);
-			Vector2D v2 = castTo2D(tri.getV2(), &failed);
-			Vector2D v3 = castTo2D(tri.getV3(), &failed);
-			Material m1 = mesh.loadBakedMaterial(mesh.shareIndex()[i] - 1);
-			Material m2 = mesh.loadBakedMaterial(mesh.shareIndex()[i+1] - 1);
-			Material m3 = mesh.loadBakedMaterial(mesh.shareIndex()[i+2] - 1);
-			Triangle2D t = Triangle2D(v1, v2,v3, m1,m2,m3, tri.getDistance(focuspoint));
-			
-			if (!failed)
-			{
-				drawBuffer.push_back(t);
-			}
-			
+				bool failed = false;
+
+				// cast vertices
+				Vector2D v1 = castTo2D(tri.getV1(), &failed);
+				Vector2D v2 = castTo2D(tri.getV2(), &failed);
+				Vector2D v3 = castTo2D(tri.getV3(), &failed);
+
+				// load materials
+				Material m1 = mesh.loadBakedMaterial(mesh.shareIndex()[i] - 1);
+				Material m2 = mesh.loadBakedMaterial(mesh.shareIndex()[i+1] - 1);
+				Material m3 = mesh.loadBakedMaterial(mesh.shareIndex()[i+2] - 1);
+
+				// compose 2d triangle
+				Triangle2D t = Triangle2D(v1, v2,v3, m1,m2,m3, tri.getDistance(focuspoint));
+			//--
+
+			// -PUSHBACK-
+				if (!failed)
+				{
+					drawBuffer.push_back(t);
+				}
+			//--
 		}
 	}
 	else // khm todo: abstract class for point groups -> then line strip

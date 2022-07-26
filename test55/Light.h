@@ -10,6 +10,10 @@ class Light
 	Color color;
 
 public:
-	Light();
-	
+	Light(Vector3D pos, Color color, double r, double l);
+	Vector3D getPos() const;
+	Color getColor() const { return color; }
+	void setPos(Vector3D& pos) { position = pos; }
+	double getReach() const { return reach; }
+	double getLuminosity() const { return luminosity; }
 };

@@ -46,6 +46,7 @@ public:
 	void draw();
 	//SDL_Renderer* getR() { return renderer; }
 	void loadDrawBuffer(Mesh mesh);
+	Vector3D getPos() const { return focuspoint; }
 	~Camera()
 	{
 		glDeleteProgram(m_shaderProgram);

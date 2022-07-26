@@ -26,22 +26,22 @@ void initGL()
     glClearColor(0.f, 0.f, 0.f, 1.f);
 }
 
-void sdl_init(char const* felirat, int szeles, int magas, SDL_Window** pwindow, SDL_Renderer** prenderer, SDL_GLContext* gcontext)
+void sdl_init(char const* title, int width, int height, SDL_Window** pwindow, SDL_Renderer** prenderer, SDL_GLContext* gcontext)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        SDL_Log("Nem indithato az SDL: %s", SDL_GetError());
+        SDL_Log("SDL wont start SDL: %s", SDL_GetError());
         exit(1);
     }
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    SDL_Window* window = SDL_CreateWindow(felirat, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, szeles, magas, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (window == NULL) {
-        SDL_Log("Nem hozhato letre az ablak: %s", SDL_GetError());
+        SDL_Log("Window creation failed: %s", SDL_GetError());
         exit(1);
     }
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
-        SDL_Log("Nem hozhato letre a megjelenito: %s", SDL_GetError());
+        SDL_Log("No Renderer: %s", SDL_GetError());
         exit(1);
     }
     SDL_RenderClear(renderer);
@@ -55,20 +55,28 @@ void sdl_init(char const* felirat, int szeles, int magas, SDL_Window** pwindow, 
 }
 
 
-Uint32 rajzIdozit(Uint32 ms, void* param)
+Uint32 drawTimer(Uint32 ms, void* param)
 {
     SDL_Event ev;
     ev.type = SDL_USEREVENT;
     SDL_PushEvent(&ev);
-    return ms;   /* ujabb varakozas */
+    return ms;  
 }
 
-Uint32 logikaIdozit(Uint32 ms, void* param)
+Uint32 logicTimer(Uint32 ms, void* param)
 {
     SDL_Event ev;
     ev.type = SDL_USEREVENT + 1;
     SDL_PushEvent(&ev);
-    return ms;   /* ujabb varakozas */
+    return ms;  
+}
+
+Uint32 lightTimer(Uint32 ms, void* param)
+{
+    SDL_Event ev;
+    ev.type = SDL_USEREVENT + 2;
+    SDL_PushEvent(&ev);
+    return ms;
 }
 
 int main(int argc, char* argv[])
@@ -83,8 +91,9 @@ int main(int argc, char* argv[])
     sdl_init("test5", ww, wh, &window, &renderer,&gcontext);
 
    
-    SDL_TimerID id1 = SDL_AddTimer(20, rajzIdozit, NULL);
-    SDL_TimerID id2 = SDL_AddTimer(8, logikaIdozit, NULL);
+    SDL_TimerID id1 = SDL_AddTimer(16, drawTimer, NULL);
+    SDL_TimerID id2 = SDL_AddTimer(8, logicTimer, NULL);
+    SDL_TimerID id3 = SDL_AddTimer(36, lightTimer, NULL);
 
     bool quit = false;
     bool console = false;
@@ -212,24 +221,23 @@ int main(int argc, char* argv[])
 
         
         case SDL_USEREVENT:
-         
             glClear(GL_COLOR_BUFFER_BIT);
-            glClearColor(0.4f, 0.4f, 1.0f, 1.0f);
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            
             program.drawCycle();
             SDL_GL_SwapWindow(window);
         break;
 
         case SDL_USEREVENT + 1:
-
             program.actionLoop();
-
         break;
 
+        case SDL_USEREVENT + 2:
+            program.lightUpdate();
+        break;
 
         }
        
-      
-        
        // SDL_RenderPresent(renderer);
     }
     SDL_RemoveTimer(id1);

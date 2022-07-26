@@ -10,10 +10,12 @@ class Program
 {
 	Camera camera;
 	std::vector<GameObject> map;
+	std::vector<Light> lights;
 	InputHandler* ih;
 	ResourceLoader rl;
 public:
 	Program(SDL_GLContext* _gcontext, InputHandler* _ih);
 	void actionLoop();
 	void drawCycle();
+	void lightUpdate();
 };
