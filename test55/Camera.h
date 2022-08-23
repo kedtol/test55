@@ -10,7 +10,6 @@
 #include <sstream>
 #include <algorithm>
 
-#include "Vector3D.h"
 #include "Transform.h"
 #include "Vector2D.h"
 #include "Triangle2D.h"

@@ -21,7 +21,7 @@ Mesh::Mesh()
 	bakedMaterialArray.push_back(Material(0, 0, 255));
 
 	*/
-	//resetBakedMaterial();
+	resetBakedMaterial();
 }
 
 Mesh::Mesh(double paneSize) //cube mesh
@@ -133,13 +133,13 @@ Mesh::Mesh(double paneSize, int w, int h) // terrain mesh
 	{
 		for (int j = 0; j <= h; j += 1)
 		{
-			double h = dproduct[(w + 1) * j + i] * 160;
+			double h = dproduct[(w + 1) * j + i] * 1;
 
 			vertexArray.push_back(Vector3D(i*paneSize + -5 * rand() % 50, j * paneSize+ -5*rand() % 50, h));
 			
-			//char cr = (rand() % 20)+120;
-			//char cg = (rand() % 40) + 170;
-			//char cb = (rand() % 20)+120;
+			char cr = (rand() % 20)+120;
+			char cg = (rand() % 40) + 170;
+			char cb = (rand() % 20)+120;
 				
 			if (h < -200)
 			{
@@ -229,24 +229,25 @@ void Mesh::resetBakedMaterial()
 	}
 }
 
-void Mesh::bakeLightSource(Light l)
+void Mesh::bakeLightSource(Light l,Mesh t)
 {
-	for (size_t i = 0; i < indexBufferSize - 2; i += 3)
+
+	for (size_t i = 0; i < t.getIndexBufferSize() - 2; i += 3)
 	{
 		// -READING-
 		int iterator = static_cast<int>(i);
 		int sol = iterator / 3;
 		size_t vo = 0; // every third vertex
-		if (sol <  indexBufferSize / 3)
+		if (sol < t.getTriCount())
 			vo = sol; //size_t scam 
 
-		int normalIndex = normalIndexBuffer[vo]; // get the normal buffer index
+		int normalIndex = t.shareNormalIndex()[vo]; // get the normal buffer index
 
-		Triangle3D tri = Triangle3D(vertexArray[indexBuffer[i] - 1], vertexArray[indexBuffer[i+1] - 1], vertexArray[indexBuffer[i+2] - 1], Material());
+		Triangle3D tri = Triangle3D(t.loadVertex(t.shareIndex()[i] - 1), t.loadVertex(t.shareIndex()[i + 1] - 1), t.loadVertex(t.shareIndex()[i + 2] - 1), Material());
 		//--
 
 		// -SHADING-
-		Vector3D normal = normalArray[normalIndex - 1]; // normalbuffer stores normal vectors/face
+		Vector3D normal = t.loadNormal(normalIndex - 1); // normalbuffer stores normal vectors/face
 		if (normal.dot(l.getPos() - tri.getWpoint()) < 0)
 			continue;
 		//--
@@ -254,16 +255,16 @@ void Mesh::bakeLightSource(Light l)
 		// -BAKING-
 		for (size_t j = 0; j < 3; j++)
 		{
-			double d = (l.getPos() - vertexArray[indexBuffer[i + j] - 1]).getLength();
+			double d = (l.getPos() - t.loadVertex(t.shareIndex()[i + j] - 1)).getLength();
 			
 			if (d > l.getReach())
 				continue;
 			
-			Color absorbedColor = materialArray[indexBuffer[i + j] - 1].getColor();
-			Color reachedColor = l.getColor() * (1 - d / l.getReach());
-			Color cColor = bakedMaterialArray[indexBuffer[i + j] - 1].getColor();
+			Color absorbedColor = materialArray[t.shareIndex()[i + j] - 1].getColor();
+			Color reachedColor = l.getColor() * (1 - d / l.getReach()) * l.getLuminosity();
+			Color cColor = bakedMaterialArray[t.shareIndex()[i + j] - 1].getColor();
 			cColor += reachedColor - absorbedColor;
-			bakedMaterialArray[indexBuffer[i + j] - 1] = cColor;
+			bakedMaterialArray[t.shareIndex()[i + j] - 1] = cColor;
 		}
 		//--
 

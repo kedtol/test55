@@ -147,8 +147,9 @@ void ResourceLoader::loadMeshes() // reuse of my (old c98) file loading system
                                 char cr = 255 / 8 * (rand() % 5 + 20);
                                 char cg = 255 / 8 * (rand() % 5 + 20);
                                 char cb = 255 / 8 * (rand() % 5 + 20);
-                                Material m = Material(Color(cr, cg, cb));
-                                mesh.addBakedMaterial(m);
+                                Material m = Material(Color(0, 0, 0));
+                                mesh.addMaterial(m);
+                               
                             }
                         }
 
@@ -207,6 +208,7 @@ void ResourceLoader::loadMeshes() // reuse of my (old c98) file loading system
                 mesh.setNormalIndexSize(nibs);
                 mesh.setIndex(ib);
                 mesh.setNormalIndex(nib);
+                mesh.resetBakedMaterial();
                 meshes.push_back(mesh); // one mesh per file
                 fclose(file);
             }

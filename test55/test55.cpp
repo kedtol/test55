@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
    
     SDL_TimerID id1 = SDL_AddTimer(16, drawTimer, NULL);
     SDL_TimerID id2 = SDL_AddTimer(8, logicTimer, NULL);
-    SDL_TimerID id3 = SDL_AddTimer(36, lightTimer, NULL);
+    SDL_TimerID id3 = SDL_AddTimer(20, lightTimer, NULL);
 
     bool quit = false;
     bool console = false;

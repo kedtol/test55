@@ -4,6 +4,7 @@
 #include "Surface.h"
 #include "Mesh.h"
 
+
 class Transform
 {
 	Vector3D position, rotCenter;

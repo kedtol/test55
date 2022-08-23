@@ -6,7 +6,6 @@
 #include "Material.h"
 #include "Line.h"
 #include "Light.h"
-#include "Matrix3x3.h"
 
 class Mesh
 {
@@ -48,7 +47,7 @@ public:
 	void setIndexSize(size_t ibs) { indexBufferSize = ibs; }
 	void setNormalIndexSize(size_t nibs) { normalIndexBufferSize = nibs; }
 	
-	void bakeLightSource(Light l);
+	void bakeLightSource(Light l,Mesh t);
 	void resetBakedMaterial();
 
 	bool getTriMode() const { return triMode; }

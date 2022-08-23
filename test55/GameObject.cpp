@@ -26,9 +26,9 @@ GameObject::GameObject(Transform _transform, Mesh _mesh)
 
 void GameObject::action()
 {
-	transform.addPitch((rand() % 10) / 100.);
-	transform.addYaw((rand() % 10) / 100.);
-	//transform.updateRotation();
+	//transform.addPitch((rand() % 10) / 1000.);
+	transform.addYaw((rand() % 10) / 1000.);
+	transform.updateRotation();
 }
 
 void GameObject::draw(Camera* camera)

@@ -1,7 +1,5 @@
 #pragma once
-#include "Transform.h"
 #include "Mesh.h"
-#include "Material.h"
 #include "Camera.h"
 
 class GameObject
@@ -16,5 +14,7 @@ public:
 	GameObject(Transform _transform, Mesh _mesh);
 	void action();
 	void draw(Camera* camera);
-	Mesh* getMesh() { return &mesh; }
+	Mesh* getMeshp() { return &mesh; }
+	Mesh& getMesh() { return mesh; }
+	Transform getTransform() { return transform; }
 };
