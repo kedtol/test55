@@ -50,16 +50,16 @@ Mesh::Mesh(double paneSize) //cube mesh
 	normalIndexBuffer = new size_t[normalIndexBufferSize]{ 1,1,2,2,3,3,4,4,5,5,6,6 };
 
 	Material m;
-	char cr = 0;
+	char cr = 55;
 	char cg = 0;
-	char cb = 0;
+	char cb = 55;
 
 	for (int i = 0; i < 8; i++)
 	{
 
-		//char cr = 255/8*(rand() % 5+20);
-		//char cg = 255 / 8 *( rand() % 5+20);
-		//char cb = 255 / 8 *( rand() % 5+20);
+		//char cr = 140 + rand() % 100;
+		//char cg = 140 + rand() % 100;
+		//char cb = 140 + rand() % 100;
 		m = Material(Color(cr, cg, cb));
 
 		materialArray.push_back(m);
@@ -125,9 +125,9 @@ Mesh::Mesh(double paneSize, int w, int h) // terrain mesh
 	}
 
 	Material m;
-	char cr = 0;
-	char cg = 0;
-	char cb = 0;
+	char cr = 255;
+	char cg = 255;
+	char cb = 255;
 
 	for (int i = 0; i <= w; i += 1)
 	{
@@ -137,15 +137,15 @@ Mesh::Mesh(double paneSize, int w, int h) // terrain mesh
 
 			vertexArray.push_back(Vector3D(i*paneSize + -5 * rand() % 50, j * paneSize+ -5*rand() % 50, h));
 			
-			char cr = (rand() % 20)+120;
-			char cg = (rand() % 40) + 170;
-			char cb = (rand() % 20)+120;
+			//char cr = (rand() % 20)+120;
+			//char cg = (rand() % 40) + 170;
+			//char cb = (rand() % 20)+120;
 				
 			if (h < -200)
 			{
-				//cr = 240;
-				//cg = 240;
-				//cb = 240;
+				cr = 240;
+				cg = 240;
+				cb = 240;
 			}
 			m = Material(Color(cr,cg,cb));
 
@@ -261,6 +261,7 @@ void Mesh::bakeLightSource(Light l,Mesh t)
 				continue;
 			
 			Color absorbedColor = materialArray[t.shareIndex()[i + j] - 1].getColor();
+			absorbedColor.invert();
 			Color reachedColor = l.getColor() * (1 - d / l.getReach()) * l.getLuminosity();
 			Color cColor = bakedMaterialArray[t.shareIndex()[i + j] - 1].getColor();
 			cColor += reachedColor - absorbedColor;

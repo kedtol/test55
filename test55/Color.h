@@ -10,7 +10,13 @@ public:
 	unsigned char getR() { return r; }
 	unsigned char getG() { return g; }
 	unsigned char getB() { return b; }
-	void invert() { r = (r - 256) % 256; g = (g - 256) % 256;b = (b - 256) % 256;}
+	void invert() 
+	{
+		
+		r = (1 - 256 / (r+1)) * 255;
+		g = (1 - 256 / (g+1)) * 255;
+		b = (1 - 256 / (b+1)) * 255;
+	}
 
 	void operator+=(Color);
 };
