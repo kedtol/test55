@@ -17,7 +17,8 @@ public:
 
 	Vector3D getPos() const { return position; };
 	Matrix3x3 getRot() const { return rotation; };
-
+	
+	void addPos(Vector3D v) { position += v; }
 	void addYaw(double _yaw) { yaw += _yaw; }
 	void addPitch(double _pitch) { pitch += _pitch; }
 

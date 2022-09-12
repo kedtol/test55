@@ -48,6 +48,8 @@ Camera::Camera(SDL_GLContext* _gcontext, InputHandler* _ih)
 	surface = Surface(Vector3D(), focuspoint);
 	drawBuffer = std::vector<Triangle2D>();
 	ih = _ih;
+	mx = 0;
+	my = 0;
 	buildShader();
 }
 
@@ -62,25 +64,31 @@ void Camera::movement()
 	if (ih->isButtonHold(6))
 	{
 		focuspoint += transform.getRot().getJ() * -speed;
-
 	}
 
 	if (ih->isButtonHold(7))
 	{
 		focuspoint += transform.getRot().getJ() * speed;
-
 	}
 
 	if (ih->isButtonHold(8))
 	{
 		focuspoint += transform.getRot().getI() * speed;
-		
 	}
 
 	if (ih->isButtonHold(9))
 	{
 		focuspoint += transform.getRot().getI() * -speed;
-		
+	}
+
+	if (ih->isButtonHold(10))
+	{
+		focuspoint += transform.getRot().getK() * speed;
+	}
+
+	if (ih->isButtonHold(11))
+	{
+		focuspoint += transform.getRot().getK() * -speed;
 	}
 
 	if (ih->isButtonHold(0))
@@ -91,36 +99,42 @@ void Camera::movement()
 	if (ih->isButtonHold(1))
 	{
 		transform.addYaw(-0.03);
-		
 	}
 
 	if (ih->isButtonHold(2))
 	{
 		transform.addPitch(0.03);
-		
 	}
 
 	if (ih->isButtonHold(3))
 	{
 		transform.addPitch(-0.03);
-		
 	}
 
-	if (ih->isButtonHold(10))
+	if (ih->getMouse_x() < -10)
 	{
-
-		focuspoint += transform.getRot().getK() * speed;
-
-
+		transform.addYaw(0.06);
+		SDL_WarpMouseInWindow(NULL, 512, 384);
 	}
 
-	if (ih->isButtonHold(11))
+	if (ih->getMouse_x() > 10)
 	{
-
-		focuspoint += transform.getRot().getK() * -speed;
-
-
+		transform.addYaw(-0.06);
+		SDL_WarpMouseInWindow(NULL, 512, 384);
 	}
+	
+	if (ih->getMouse_y() < -10)
+	{
+		transform.addPitch(0.06);
+		SDL_WarpMouseInWindow(NULL, 512, 384);
+	}
+
+	if (ih->getMouse_y() > 10)
+	{
+		transform.addPitch(-0.06);
+		SDL_WarpMouseInWindow(NULL, 512, 384);
+	}
+	
 }
 
 void Camera::action()
@@ -202,7 +216,7 @@ void Camera::draw()
 	//SDL_RenderSetScale(renderer, 2, 2);
 	std::sort(drawBuffer.begin(), drawBuffer.end(), compare);
 	glUseProgram(m_shaderProgram);
-	std::cout << drawBuffer.size() << std::endl;
+	//std::cout << drawBuffer.size() << std::endl;
 
 	for (size_t i = 0; i < drawBuffer.size(); i++)
 	{

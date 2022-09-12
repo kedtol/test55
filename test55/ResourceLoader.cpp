@@ -147,7 +147,7 @@ void ResourceLoader::loadMeshes() // reuse of my (old c98) file loading system
                                 char cr = 255 / 8 * (rand() % 5 + 20);
                                 char cg = 255 / 8 * (rand() % 5 + 20);
                                 char cb = 255 / 8 * (rand() % 5 + 20);
-                                Material m = Material(Color(0, 0, 0));
+                                Material m = Material(Color(255, 255, 255));
                                 mesh.addMaterial(m);
                                
                             }

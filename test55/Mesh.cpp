@@ -50,9 +50,15 @@ Mesh::Mesh(double paneSize) //cube mesh
 	normalIndexBuffer = new size_t[normalIndexBufferSize]{ 1,1,2,2,3,3,4,4,5,5,6,6 };
 
 	Material m;
-	char cr = 55;
+	char cr = 0;
 	char cg = 0;
-	char cb = 55;
+	char cb = 0;
+	if (rand() % 2 > 0)
+		cr = 55;
+	if (rand() % 2 > 0)
+		cg = 55;
+	if (rand() % 2 > 0)
+		cb = 55;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -133,13 +139,13 @@ Mesh::Mesh(double paneSize, int w, int h) // terrain mesh
 	{
 		for (int j = 0; j <= h; j += 1)
 		{
-			double h = dproduct[(w + 1) * j + i] * 1;
+			double h = dproduct[(w + 1) * j + i] * 50;
 
 			vertexArray.push_back(Vector3D(i*paneSize + -5 * rand() % 50, j * paneSize+ -5*rand() % 50, h));
 			
-			//char cr = (rand() % 20)+120;
-			//char cg = (rand() % 40) + 170;
-			//char cb = (rand() % 20)+120;
+			char cr = (rand() % 10);
+			char cg = (rand() % 40) + 20;
+			char cb = (rand() % 5);
 				
 			if (h < -200)
 			{

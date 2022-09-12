@@ -1,11 +1,15 @@
 #pragma once
 #include "Mesh.h"
 #include "Camera.h"
+#include "Matrix3x3.h"
 
 class GameObject
 {
 	Transform transform;
 	Mesh mesh;
+	double pspeed;
+	double yspeed;
+	double mspeed;
 
 public:
 	GameObject(Transform _transform); // tri

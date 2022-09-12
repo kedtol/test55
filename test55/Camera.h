@@ -26,6 +26,8 @@ class Camera
 	double surfaceWidth, surfaceHeight, viewportScale;
 	Vector2D viewport; // renderer resolution wont impact performance (the engine only casts points)
 	std::vector<Triangle2D> drawBuffer;
+	int mx;
+	int my;
 
 	GLuint m_vertexShader;
 	GLuint m_fragmentShader;

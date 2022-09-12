@@ -2,6 +2,9 @@
 
 InputHandler::InputHandler()
 {
+    mouse_x = 0;
+    mouse_y = 0;
+    
     for (int i = 0; i < 10; i++)
     {
         rawStateList[i] = true;
@@ -48,4 +51,11 @@ bool InputHandler::isButtonHold(int button) const
         return true;
     }
 
+}
+
+void InputHandler::recordMouse()
+{
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+    mouse_x -= 512;
+    mouse_y -= 384;
 }

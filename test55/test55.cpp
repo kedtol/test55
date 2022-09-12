@@ -112,6 +112,10 @@ int main(int argc, char* argv[])
             quit = true;
             break;
            
+        case SDL_MOUSEMOTION:
+            ih.recordMouse();
+        break;
+        
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym)
             {
@@ -230,10 +234,13 @@ int main(int argc, char* argv[])
 
         case SDL_USEREVENT + 1:
             program.actionLoop();
+           
+            
         break;
 
         case SDL_USEREVENT + 2:
             program.lightUpdate();
+            
         break;
 
         }
