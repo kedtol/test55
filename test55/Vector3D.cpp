@@ -40,6 +40,19 @@ Vector3D Vector3D::cross(Vector3D v) const
 	return Vector3D(y * v.getZ() - z * v.getY(), z * v.getX() - x * v.getZ(), x * v.getY() - y * v.getX());
 }
 
+bool Vector3D::insideTriangle(Vector3D v1, Vector3D v2, Vector3D v3)
+{
+	double area = (v1-v2).cross(v1-v3).getLength(); // (area times two)
+	double alpha = (*this-v2).cross(*this-v3).getLength() / area;
+	double beta = (*this-v3).cross(*this-v1).getLength() / area;
+	double gamma = 1 - alpha - beta;
+
+	if (alpha + beta + gamma == 1 && alpha >= 0 && alpha <= 1 && beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1)
+		return true;
+	else
+		return false;
+}
+
 Vector3D Vector3D::applyMatrix(Matrix3x3& matrix)
 {
 	double x_ = getX() * matrix.getI().getX() + getY() * matrix.getJ().getX() + getZ() * matrix.getK().getX();

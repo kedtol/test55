@@ -139,7 +139,7 @@ Mesh::Mesh(double paneSize, int w, int h) // terrain mesh
 	{
 		for (int j = 0; j <= h; j += 1)
 		{
-			double h = dproduct[(w + 1) * j + i] * 50;
+			double h = dproduct[(w + 1) * j + i] * 0;
 
 			vertexArray.push_back(Vector3D(i*paneSize + -5 * rand() % 50, j * paneSize+ -5*rand() % 50, h));
 			

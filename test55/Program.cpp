@@ -5,49 +5,31 @@ Program::Program(SDL_GLContext* _gcontext,InputHandler* _ih)
 	rl.loadMeshes();
 	camera = Camera(_gcontext,_ih);
 	ih = _ih;
-	//lights.push_back(Light(Vector3D(0, 0, -5000), Color(80, 80, 80), 50000, 1));
+	lights.push_back(Light(Vector3D(0, 0, -5000), Color(80, 80, 80), 50000, 1));
 
-	//lights.push_back(Light(Vector3D(0,0,-1000),Color(100,100,100),80000,0.4));
 	lights.push_back(Light(Vector3D(30000, 30000, -5000), Color(0, 0, 255), 50000, 0.8));
 	lights.push_back(Light(Vector3D(30000, -30000, -5000), Color(255, 0, 0), 50000, 0.8));
 	lights.push_back(Light(Vector3D(-15000, -15000, -30000), Color(0, 255, 0), 50000, 0.8));
 
-	//lights.push_back(Light(Vector3D(10000, 10000, -0), Color(255, 0, 0), 20000, 0.3));
-	//lights.push_back(Light(Vector3D(10000, 15000, -0), Color(0, 255, 0), 20000, 0.3));
-	//map.push_back(GameObject(Transform(Vector3D(40000, 40000, -2000)), 1000));
-	//lights.push_back(Light(Vector3D(300, 1000, 0), Color(255, 255, 255), 5000, 0.4));
-	//lights.push_back(Light(Vector3D(0, 0, 1000), Color(255, 0, 0), 4000, 1));
-	//map.push_back(GameObject(Transform(Vector3D()), rand() % 400 + 100));
-
-	
-	//map.push_back(GameObject(Transform(Vector3D(0, 0, 0)), 1000));
-	//map.push_back(GameObject(Transform(Vector3D(0, 3000, 500)), 1000));
-	//map.push_back(GameObject(Transform(Vector3D(5000, 0, 1600)), 1000));
-
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		//map.push_back(GameObject(Transform(Vector3D(rand()%100000000, rand() % 100000000, rand() % 100000-4000)), rand() % 200 + 1000));
-		//map.push_back(GameObject(Transform(Vector3D(rand() % 10000, rand() % 10000, rand() % 20000)), rl.getMesh(0)));
+		map.push_back(GameObject(Transform(Vector3D(rand()%100000000, rand() % 100000000, 0)), rand() % 200 + 300));
 	}
-	for (int i = 0; i < 1; i++)
-	{
-		map.push_back(GameObject(Transform(Vector3D(0, 0, 0)), rl.getMesh(0)));
-	}
-	//map.push_back(GameObject(Transform(Vector3D(-60000,-60000,17000)),1010,100,100));
+
+	solid = new GameObject(Transform(Vector3D(-60000, -60000, 10000)), 1010, 100, 100);
+	map.push_back(*solid);
+
 	
 	//map.push_back(GameObject(Transform(Vector3D(5000, 1000, 2000)), rl.getMesh(1)));
-	//map.push_back(GameObject(Transform(Vector3D(5000, 1000, 2000)), rl.getMesh(2)));
-	//map.push_back(GameObject(Transform(Vector3D(5000, 1000, 2000)), rl.getMesh(3)));
-	//map.push_back(GameObject(Transform(Vector3D(5000, 1000, 2000)), rl.getMesh(4)));
 }
 
 void Program::actionLoop()
 {
 	Vector3D campos = camera.getPos();
-	//lights[0].setPos(campos);
+	lights[0].setPos(campos);
 	for (size_t i = 0; i < map.size(); i++)
 	{
-		map[i].action();
+		map[i].action(solid);
 	}
 	camera.action();
 }

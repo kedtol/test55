@@ -13,9 +13,11 @@ class Program
 	std::vector<Light> lights;
 	InputHandler* ih;
 	ResourceLoader rl;
+	GameObject* solid;
 public:
 	Program(SDL_GLContext* _gcontext, InputHandler* _ih);
 	void actionLoop();
 	void drawCycle();
 	void lightUpdate();
+	
 };

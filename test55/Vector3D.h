@@ -16,9 +16,14 @@ public:
 	double getY() const { return y; }
 	double getZ() const { return z; }
 
+	void setX(double x) { this->x = x; }
+	void setY(double y) { this->y = y; }
+	void setZ(double z)  { this->z = z; }
+
 	double getLength() const;
 	double dot(Vector3D v) const;
 	Vector3D cross(Vector3D v) const;
+	bool insideTriangle(Vector3D v1, Vector3D v2, Vector3D v3);
 
 	Vector3D applyMatrix(Matrix3x3& matrix);
 	void operator+=(Vector3D v);

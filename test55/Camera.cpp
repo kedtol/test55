@@ -48,8 +48,7 @@ Camera::Camera(SDL_GLContext* _gcontext, InputHandler* _ih)
 	surface = Surface(Vector3D(), focuspoint);
 	drawBuffer = std::vector<Triangle2D>();
 	ih = _ih;
-	mx = 0;
-	my = 0;
+	gravForce = Vector3D(0, 0, 10);
 	buildShader();
 }
 
@@ -63,32 +62,40 @@ void Camera::movement()
 {
 	if (ih->isButtonHold(6))
 	{
+		double z = focuspoint.getZ();
 		focuspoint += transform.getRot().getJ() * -speed;
+		focuspoint.setZ(z);
 	}
 
 	if (ih->isButtonHold(7))
 	{
+		double z = focuspoint.getZ();
 		focuspoint += transform.getRot().getJ() * speed;
+		focuspoint.setZ(z);
 	}
 
 	if (ih->isButtonHold(8))
 	{
+		double z = focuspoint.getZ();
 		focuspoint += transform.getRot().getI() * speed;
+		focuspoint.setZ(z);
 	}
 
 	if (ih->isButtonHold(9))
 	{
+		double z = focuspoint.getZ();
 		focuspoint += transform.getRot().getI() * -speed;
+		focuspoint.setZ(z);
 	}
 
 	if (ih->isButtonHold(10))
 	{
-		focuspoint += transform.getRot().getK() * speed;
+		focuspoint += Vector3D(0,0, -speed);
 	}
 
 	if (ih->isButtonHold(11))
 	{
-		focuspoint += transform.getRot().getK() * -speed;
+		focuspoint += Vector3D(0, 0, speed);
 	}
 
 	if (ih->isButtonHold(0))
