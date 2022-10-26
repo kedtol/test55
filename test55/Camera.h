@@ -45,7 +45,7 @@ public:
 	void action();
 	void draw();
 	//SDL_Renderer* getR() { return renderer; }
-	void loadDrawBuffer(Mesh mesh);
+	void loadDrawBuffer(Mesh mesh,bool* faces);
 	Vector3D getPos() const { return focuspoint; }
 	~Camera()
 	{

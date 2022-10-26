@@ -239,7 +239,7 @@ void Camera::draw()
 	drawBuffer.shrink_to_fit();
 }
 
-void Camera::loadDrawBuffer(Mesh mesh)
+void Camera::loadDrawBuffer(Mesh mesh, bool* faces)
 {
 	if (mesh.getTriMode()) // load, cast, put into rendererBuffer
 	{
@@ -261,6 +261,29 @@ void Camera::loadDrawBuffer(Mesh mesh)
 				Vector3D normal = mesh.loadNormal(normalIndex-1); // normalbuffer stores normal vectors/face
 				if (normal.dot(focuspoint - tri.getWpoint()) < 0)
 					continue;
+
+				// -AGRESSIVE Z CULLING
+				if (abs(tri.getWpoint().getZ() - focuspoint.getZ()) > 60000)
+					continue;
+				// --
+
+				// -VOXEL CULLING-
+					if (faces != NULL)
+					{
+						if (!faces[3] && (i == 0 || i == 3))  // ytop
+							continue;
+						if (!faces[5] && (i == 6 || i == 9))  // xtop
+							continue;
+						if (!faces[4] && (i == 12 || i == 15))  // xbottom
+							continue;
+						if (!faces[2] && (i == 18 || i == 21))  // ybottom
+							continue;
+						if (!faces[1] && (i == 24 || i == 27))  // ztop
+							continue;
+						if (!faces[0] && (i == 30 || i == 33))  // zbottom
+							continue;
+					}
+				// --
 			//--
 
 			// -CASTING-
@@ -282,9 +305,7 @@ void Camera::loadDrawBuffer(Mesh mesh)
 
 			// -PUSHBACK-
 				if (!failed)
-				{
 					drawBuffer.push_back(t);
-				}
 			//--
 		}
 	}

@@ -50,5 +50,7 @@ public:
 	void bakeLightSource(Light l,Mesh t);
 	void resetBakedMaterial();
 
+	void deleteFaces(bool* faces,size_t faceNumber);
+
 	bool getTriMode() const { return triMode; }
 };

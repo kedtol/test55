@@ -36,26 +36,26 @@ GameObject::GameObject(Transform _transform, Mesh _mesh)
 	//mspeed = (double)((rand() % 30)) + 10;
 }
 
-void GameObject::action(GameObject* solid)
+void GameObject::action()
 {
 	transform.addPitch(pspeed);
 	transform.addYaw(yspeed);
 	transform.updateRotation();
-	transform.addPos(transform.getRot().getJ()*mspeed);
-	if (hasPhysics)
-		updatePhysics(solid);
+	//transform.addPos(transform.getRot().getJ()*mspeed);
+	//if (hasPhysics)
+	//	updatePhysics(solid);
 }
 
-void GameObject::updatePhysics(GameObject* solid)
+/*void GameObject::updatePhysics(GameObject* solid)
 {
 	if (!forceStabsObject(transform.getPos(),gravForce,*solid))
 		transform.addPos(gravForce);
-}
+}*/
 
 
 void GameObject::draw(Camera* camera)
 {
-	camera->loadDrawBuffer(transform.applyTransform(mesh));
+	camera->loadDrawBuffer(transform.applyTransform(mesh),NULL);
 }
 
 bool forceStabsObject(Vector3D p, Vector3D f, GameObject o)

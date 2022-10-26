@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "InputHandler.h"
 #include "ResourceLoader.h"
+#include "Chunk.h"
 
 class Program
 {
@@ -14,6 +15,9 @@ class Program
 	InputHandler* ih;
 	ResourceLoader rl;
 	GameObject* solid;
+	Chunk* c;
+	Chunk* c1;
+	Chunk* c2;
 public:
 	Program(SDL_GLContext* _gcontext, InputHandler* _ih);
 	void actionLoop();

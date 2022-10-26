@@ -2,10 +2,19 @@
 
 class Voxel : public GameObject
 {
+	bool* faces = NULL;
 	int id;
-	bool* faces;
+	Mesh cutdownMesh;
 
 public:
-	Voxel(size_t x, size_t y, size_t z, int id, int cubeSize) : GameObject(Transform(Vector3D(x*cubeSize, y* cubeSize, z* cubeSize)), cubeSize), id(id) { faces = NULL; }
+	Voxel(size_t x, size_t y, size_t z, int id, int cubeSize) : GameObject(Transform(Vector3D(x*cubeSize*2, y* cubeSize*2, z* cubeSize*2)), cubeSize), id(id) { faces = NULL; }
 	Voxel() :GameObject(Transform(),0) {}
+	void draw(Camera* camera);
+	void setFaces(bool* faces) 
+	{
+		if (this->faces != NULL)
+			delete this->faces;
+		this->faces = faces; 
+	}
+	int getId() { return id; }
 };
