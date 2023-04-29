@@ -4,6 +4,7 @@ Chunk::Chunk(int worldSize, int x, int y)
 {
 	this->x = x;
 	this->y = y;
+	Mesh* cube = new Mesh(worldSize);
 
 	for (int i = 0; i < xs; i++)
 	{
@@ -14,7 +15,7 @@ Chunk::Chunk(int worldSize, int x, int y)
 				int id = 0;
 				if (rand()%100 < 99)
 					id = 1;
-				voxels[i][j][k] = Voxel(i+xs*x, j+ys*y, k, id, worldSize);
+				voxels[i][j][k] = Voxel(i+xs*x, j+ys*y, k, id, worldSize,cube);
 			}
 		}
 	}
@@ -64,19 +65,19 @@ void Chunk::simulate()
 	}
 }
 
-void Chunk::draw(Camera* camera)
-{
-	for (int i = 0; i < xs; i++)
-	{
-		for (int j = 0; j < ys; j++)
-		{
-			for (int k = 0; k < zs; k++)
-			{
-				voxels[i][j][k].draw(camera);
-			}
-		}
-	}
-}
+//void Chunk::draw(Camera* camera)
+//{
+//	for (int i = 0; i < xs; i++)
+//	{
+//		for (int j = 0; j < ys; j++)
+//		{
+//			for (int k = 0; k < zs; k++)
+//			{
+//				voxels[i][j][k].draw(camera);
+//			}
+//		}
+//	}
+//}
 
 void Chunk::lightUpdate(std::vector<Light>* lights)
 {

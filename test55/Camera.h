@@ -10,22 +10,26 @@
 #include <sstream>
 #include <algorithm>
 
-#include "Transform.h"
 #include "Vector2D.h"
 #include "Triangle2D.h"
 #include "Line.h"
 #include "InputHandler.h"
+#include "mat4.h"
+#include "GameObject.h"
 
 class Camera
 {
 	Vector3D focuspoint;
 	Surface surface;
 	Transform transform;
-	double speed = 60;
+	double speed = 30;
+	double camx;
+	double camy;
 	double focaldistance;
 	double surfaceWidth, surfaceHeight, viewportScale;
 	Vector2D viewport; // renderer resolution wont impact performance (the engine only casts points)
 	std::vector<Triangle2D> drawBuffer;
+	std::vector<Triangle3D> drawBuffer3D;
 	Vector3D gravForce;
 
 	GLuint m_vertexShader;
@@ -46,6 +50,8 @@ public:
 	void draw();
 	//SDL_Renderer* getR() { return renderer; }
 	void loadDrawBuffer(Mesh mesh,bool* faces);
+	void drawGameObject(GameObject& go);
+
 	Vector3D getPos() const { return focuspoint; }
 	~Camera()
 	{

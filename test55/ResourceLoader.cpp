@@ -137,13 +137,13 @@ void ResourceLoader::loadMeshes() // reuse of my (old c98) file loading system
                             {
                                 double x, y, z;
                                 sscanf_s(line, "vn %lf  %lf  %lf", &x, &y, &z);
-                                mesh.addNormal(Vector3D(x*100, y*100, -1*z*100));
+                                mesh.addNormal(Vector3D(x, y, -1*z));
                             }
                             else // load vertex
                             {
                                 double x, y, z;
                                 sscanf_s(line, "v %lf  %lf  %lf",&x,&y,&z);
-                                mesh.addVertex(Vector3D(x*100, y*100, -1*z*100));
+                                mesh.addVertex(Vector3D(x, y, -1*z));
                                 char cr = 255 / 8 * (rand() % 5 + 20);
                                 char cg = 255 / 8 * (rand() % 5 + 20);
                                 char cb = 255 / 8 * (rand() % 5 + 20);

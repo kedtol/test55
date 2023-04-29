@@ -19,5 +19,5 @@ public:
 	Triangle2D(Vector2D _v1, Vector2D _v2, Vector2D _v3,Material _m, Material _m1, Material _m2, double _d);
 	void draw(SDL_Renderer* renderer);
 	void render(SDL_GLContext* gcontext);
-	double getD() { return d; }
+	double getD() const { return d; }
 };

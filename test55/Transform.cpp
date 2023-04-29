@@ -3,6 +3,7 @@
 Transform::Transform()
 {
 	position = Vector3D();
+	rotCenter = Vector3D();
 	rotation = Matrix3x3();
 	yaw = 0;
 	pitch = 0;
@@ -13,6 +14,7 @@ Transform::Transform()
 Transform::Transform(Vector3D v)
 {
 	position = v;
+	rotCenter = Vector3D();
 	rotation = Matrix3x3();
 	yaw = 0;
 	pitch = 0;
@@ -21,7 +23,12 @@ Transform::Transform(Vector3D v)
 
 Mesh Transform::applyTransform(Mesh& mesh) const
 {
-	return Mesh(mesh,rotation,position);
+	return Mesh(mesh,rotation,position, rotCenter);
+}
+
+Mesh Transform::applyTransform(Mesh* mesh) const
+{
+	return Mesh(*mesh, rotation, position, rotCenter);
 }
 
 void Transform::rotateSurface(Surface& surface,double focaldistance,Vector3D focuspoint) const

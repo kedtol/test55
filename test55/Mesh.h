@@ -23,7 +23,7 @@ public:
 	Mesh();
 	Mesh(double paneSize); //cube
 	Mesh(double paneSize,int w, int h); //terrain
-	Mesh(Mesh& mesh, Matrix3x3 matrix, Vector3D position);
+	Mesh(Mesh& mesh, Matrix3x3 matrix, Vector3D position, Vector3D rotCenter);
 
 	Vector3D loadVertex(size_t i);
 	Vector3D loadNormal(size_t i);

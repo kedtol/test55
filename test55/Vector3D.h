@@ -22,6 +22,7 @@ public:
 
 	double getLength() const;
 	double dot(Vector3D v) const;
+	Vector3D normalize() const;
 	Vector3D cross(Vector3D v) const;
 	bool insideTriangle(Vector3D v1, Vector3D v2, Vector3D v3);
 

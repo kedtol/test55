@@ -90,6 +90,9 @@
     <ClCompile Include="Voxel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TerrainChunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -177,6 +180,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Voxel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainChunk.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mat4.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vec4.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

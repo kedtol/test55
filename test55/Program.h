@@ -18,6 +18,8 @@ class Program
 	Chunk* c;
 	Chunk* c1;
 	Chunk* c2;
+	Chunk* c3;
+	Chunk* c4;
 public:
 	Program(SDL_GLContext* _gcontext, InputHandler* _ih);
 	void actionLoop();

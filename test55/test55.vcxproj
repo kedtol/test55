@@ -132,15 +132,16 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OpenMPSupport>true</OpenMPSupport>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -169,6 +170,7 @@
     <ClCompile Include="Line2D.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="TerrainChunk.cpp" />
     <ClCompile Include="test55.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Triangle2D.cpp" />
@@ -185,6 +187,10 @@
     <ClInclude Include="dirent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="vec4.h" />
+    <ClInclude Include="mat4.h" />
+    <ClInclude Include="PerlinMap.h" />
+    <ClInclude Include="TerrainChunk.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Line2D.h" />
     <ClInclude Include="load.h" />

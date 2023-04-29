@@ -12,9 +12,9 @@ GameObject::GameObject(Transform _transform, double panesize)
 	transform = _transform;
 	hasPhysics = true;
 	gravForce = Vector3D(0, 0, 0.05*panesize);
-	//yspeed = (double)((rand() % 30)) / 1000.;
-	//pspeed = (double)((rand() % 30)) / 1000.;
-	//mspeed = (double)((rand() % 30))+10;
+	yspeed = (double)((rand() % 30)) / 1000.;
+	pspeed = (double)((rand() % 30)) / 1000.;
+	mspeed = (double)((rand() % 30))+10;
 	mesh = Mesh(panesize);
 }
 
@@ -32,14 +32,14 @@ GameObject::GameObject(Transform _transform, Mesh _mesh)
 	transform = _transform;
 	mesh = _mesh;
 	yspeed = (double)((rand() % 30)) / 1000.;
-	//pspeed = (double)((rand() % 30)) / 1000.;
-	//mspeed = (double)((rand() % 30)) + 10;
+	pspeed = (double)((rand() % 30)) / 1000.;
+	mspeed = (double)((rand() % 30)) + 10;
 }
 
 void GameObject::action()
 {
-	transform.addPitch(pspeed);
-	transform.addYaw(yspeed);
+	//transform.addPitch(pspeed);
+	//transform.addYaw(0.01);
 	transform.updateRotation();
 	//transform.addPos(transform.getRot().getJ()*mspeed);
 	//if (hasPhysics)
@@ -53,10 +53,10 @@ void GameObject::action()
 }*/
 
 
-void GameObject::draw(Camera* camera)
-{
-	camera->loadDrawBuffer(transform.applyTransform(mesh),NULL);
-}
+//void GameObject::draw(Camera* camera)
+//{
+//	camera->loadDrawBuffer(transform.applyTransform(mesh),NULL);
+//}
 
 bool forceStabsObject(Vector3D p, Vector3D f, GameObject o)
 {
@@ -74,7 +74,13 @@ bool forceStabsObject(Vector3D p, Vector3D f, GameObject o)
 
 		int normalIndex = m.shareNormalIndex()[vo]; // get the normal buffer index
 
-		Triangle3D tri = Triangle3D(m.loadVertex(m.shareIndex()[i] - 1), m.loadVertex(m.shareIndex()[i + 1] - 1), m.loadVertex(m.shareIndex()[i + 2] - 1), Material());
+		Triangle3D tri = Triangle3D(
+			m.loadVertex(m.shareIndex()[i] - 1),
+			m.loadVertex(m.shareIndex()[i + 1] - 1),
+			m.loadVertex(m.shareIndex()[i + 2] - 1),
+			Material(),
+			Material(),
+			Material());
 		//--
 
 		// -GETTING THE NORMAL-

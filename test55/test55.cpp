@@ -24,6 +24,7 @@ void initGL()
 
     //Initialize clear color
     glClearColor(0.f, 0.f, 0.f, 1.f);
+    
 }
 
 void sdl_init(char const* title, int width, int height, SDL_Window** pwindow, SDL_Renderer** prenderer, SDL_GLContext* gcontext)
@@ -44,6 +45,7 @@ void sdl_init(char const* title, int width, int height, SDL_Window** pwindow, SD
         SDL_Log("No Renderer: %s", SDL_GetError());
         exit(1);
     }
+
     SDL_RenderClear(renderer);
     *gcontext = SDL_GL_CreateContext(window);
     *pwindow = window;
@@ -51,6 +53,18 @@ void sdl_init(char const* title, int width, int height, SDL_Window** pwindow, SD
     //Initialize OpenGL
     initGL();
   
+    // OpenGL major and minor versions
+    int majorVersion = 3, minorVersion = 3;
+
+    printf("GL Vendor    : %s\n", glGetString(GL_VENDOR));
+    printf("GL Renderer  : %s\n", glGetString(GL_RENDERER));
+    printf("GL Version (string)  : %s\n", glGetString(GL_VERSION));
+    glGetIntegerv(GL_MAJOR_VERSION, &majorVersion);
+    glGetIntegerv(GL_MINOR_VERSION, &minorVersion);
+    printf("GL Version (integer) : %d.%d\n", majorVersion, minorVersion);
+    printf("GLSL Version : %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+
     //*prenderer = renderer;
 }
 
@@ -225,11 +239,13 @@ int main(int argc, char* argv[])
 
         
         case SDL_USEREVENT:
-            glClear(GL_COLOR_BUFFER_BIT);
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-            
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //glClearColor(0.4f, 0.4f, 0.9f, 1.0f);
+            glClearColor(0, 0, 0, 1.0f);
             program.drawCycle();
             SDL_GL_SwapWindow(window);
+
+            
         break;
 
         case SDL_USEREVENT + 1:

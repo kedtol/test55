@@ -139,13 +139,13 @@ Mesh::Mesh(double paneSize, int w, int h) // terrain mesh
 	{
 		for (int j = 0; j <= h; j += 1)
 		{
-			double h = dproduct[(w + 1) * j + i] * 0;
+			double h = dproduct[(w + 1) * j + i] * 100;
 
-			vertexArray.push_back(Vector3D(i*paneSize + -5 * rand() % 50, j * paneSize+ -5*rand() % 50, h));
+			vertexArray.push_back(Vector3D(i*paneSize, j * paneSize, h));
 			
 			char cr = (rand() % 10);
-			char cg = (rand() % 40) + 20;
-			char cb = (rand() % 5);
+			char cg = (rand() % 30) + 20;
+			char cb = (rand() % 2);
 				
 			if (h < -200)
 			{
@@ -181,7 +181,7 @@ Mesh::Mesh(double paneSize, int w, int h) // terrain mesh
 	resetBakedMaterial();
 }
 
-Mesh::Mesh(Mesh& mesh, Matrix3x3 matrix, Vector3D position) //copy constructor
+Mesh::Mesh(Mesh& mesh, Matrix3x3 matrix, Vector3D position, Vector3D rotCenter) //copy constructor
 {
 	indexBuffer = mesh.shareIndex();
 	indexBufferSize = mesh.getIndexBufferSize();
@@ -190,9 +190,11 @@ Mesh::Mesh(Mesh& mesh, Matrix3x3 matrix, Vector3D position) //copy constructor
 	triMode = mesh.getTriMode();
 
 	for (size_t i = 0; i < mesh.getVertexCount(); i++)
-		vertexArray.push_back(mesh.loadVertex(i).applyMatrix(matrix)+position);
+		//vertexArray.push_back((mesh.loadVertex(i)-rotCenter).applyMatrix(matrix)+position);
+		vertexArray.push_back(mesh.loadVertex(i).applyMatrix(matrix) + position);
 
 	for (size_t i = 0; i < mesh.getNormalCount(); i++)
+		//normalArray.push_back((mesh.loadNormal(i) - rotCenter).applyMatrix(matrix));
 		normalArray.push_back(mesh.loadNormal(i).applyMatrix(matrix));
 
 	for (size_t i = 0; i < mesh.getVertexCount(); i++)
@@ -237,7 +239,7 @@ void Mesh::resetBakedMaterial()
 
 void Mesh::bakeLightSource(Light l,Mesh t)
 {
-
+	
 	for (size_t i = 0; i < t.getIndexBufferSize() - 2; i += 3)
 	{
 		// -READING-
@@ -249,7 +251,13 @@ void Mesh::bakeLightSource(Light l,Mesh t)
 
 		int normalIndex = t.shareNormalIndex()[vo]; // get the normal buffer index
 
-		Triangle3D tri = Triangle3D(t.loadVertex(t.shareIndex()[i] - 1), t.loadVertex(t.shareIndex()[i + 1] - 1), t.loadVertex(t.shareIndex()[i + 2] - 1), Material());
+		Triangle3D tri = Triangle3D(
+			t.loadVertex(t.shareIndex()[i] - 1),
+			t.loadVertex(t.shareIndex()[i + 1] - 1),
+			t.loadVertex(t.shareIndex()[i + 2] - 1),
+			Material(),
+			Material(),
+			Material());
 		//--
 
 		// -SHADING-

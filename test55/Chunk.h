@@ -9,7 +9,7 @@ public:
 	Chunk(int worldSize, int x, int y);
 	Chunk();
 	void simulate();
-	void draw(Camera* camera);
+	/*void draw(Camera* camera);*/
 	GameObject* get(size_t x, size_t y, size_t z);
 	void lightUpdate(std::vector<Light> *lights);
 	void optimizeVoxels();

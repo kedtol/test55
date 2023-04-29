@@ -1,6 +1,7 @@
 #pragma once
 #include "Mesh.h"
-#include "Camera.h"
+#include "Transform.h"
+//#include "Camera.h"
 #include "Matrix3x3.h"
 
 
@@ -22,7 +23,7 @@ public:
 	GameObject(Transform _transform, double panesize, int w, int h); // terrain
 	GameObject(Transform _transform, Mesh _mesh);
 	void action();
-	void draw(Camera* camera);
+	/*void draw(Camera* camera);*/
 	
 	Mesh* getMeshp() { return &mesh; }
 	Mesh& getMesh() { return mesh; }

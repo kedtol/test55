@@ -1,6 +1,12 @@
 #include "Vector3D.h"
 //#include "Matrix3x3.h"
 
+Vector3D operator*(Vector3D v, double n)
+{
+	return Vector3D(v.getX() * n, v.getY() * n, v.getZ() * n);
+}
+
+
 Matrix3x3::Matrix3x3(Vector3D _i, Vector3D _j, Vector3D _k)
 {
 	i = _i;
@@ -23,6 +29,11 @@ Vector3D::Vector3D(double _x, double _y, double _z)
 	x = _x;
 	y = _y;
 	z = _z;
+}
+
+Vector3D Vector3D::normalize() const
+{
+	return Vector3D(*this) * (1 / getLength());
 }
 
 double Vector3D::getLength() const
@@ -86,8 +97,4 @@ Vector3D operator-(Vector3D v1, Vector3D v2)
 	return Vector3D(v1.getX() - v2.getX(), v1.getY() - v2.getY(), v1.getZ() - v2.getZ());
 }
 
-Vector3D operator*(Vector3D v, double n)
-{
-	return Vector3D(v.getX()*n, v.getY()*n, v.getZ()*n);
-}
 
