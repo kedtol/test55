@@ -18,7 +18,7 @@ public:
 
 	vec4& operator[](int i) { return rows[i]; }
 	vec4 operator[](int i) const { return rows[i]; }
-	operator double*() const { return (double*)this; }
+	operator float*() const { return (float*)this; }
 
 };
 

@@ -1,21 +1,21 @@
 #pragma once
 class vec4
 {
-	double x, y, z, w;
+	float x, y, z, w;
 
 public:
 	vec4(){}
 
-	vec4(double _x , double _y, double _z, double _w) 
+	vec4(float _x , float _y, float _z, float _w)
 	{
 		x = _x;
 		y = _y;
 		z = _z;
 		w = _w;
 	}
-	double& operator[](int i) { return *(&x + i); }
-	double operator[](int i) const { return *(&x + i); }
-	vec4 operator*(double a) const { return vec4(x * a, y * a, z * a, w * a); }
+	float& operator[](int i) { return *(&x + i); }
+	float operator[](int i) const { return *(&x + i); }
+	vec4 operator*(float a) const { return vec4(x * a, y * a, z * a, w * a); }
 	vec4 operator+(vec4 a) const { return vec4(x + a.x, y + a.y, z + a.z, w + a.w); }
 	vec4 operator-(vec4 a) const { return vec4(x - a.x, y - a.y, z - a.z, w - a.w); }
 	void operator+=(const vec4 a) { x += a.x; y += a.y; z += a.z; w += a.w; }

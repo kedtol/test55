@@ -185,7 +185,6 @@ void Camera::movement()
 
 void Camera::action()
 {
-	//transform.setRotCenter(focuspoint);
 	
 	movement();
 	updateRotation();
@@ -194,16 +193,7 @@ void Camera::action()
 void Camera::buildShader()
 {
 	glEnable(GL_DEPTH_TEST);
-	/*const GLchar* vertexSource =
-		"#version 330 core\n"
-		"in vec2 position;"
-		"in vec3 color;"
-		"out vec3 Color;"
-		"void main()"
-		"{"
-		"    gl_Position = vec4(position, 0.0, 1.0);"
-		"    Color = color;"
-		"}";*/
+	
 	const GLchar* vertexSource =
 		"#version 330 core\n"
 		"layout(location = 0) in vec3 vp;"
@@ -241,16 +231,8 @@ void Camera::buildShader()
 	
 	glBindFragDataLocation(m_shaderProgram, 0, "outColor");
 	glLinkProgram(m_shaderProgram);
-
 	
-
-	/*GLint posAttrib = glGetAttribLocation(m_shaderProgram, "vp");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(GLdouble), 0);
-
-	GLint colAttrib = glGetAttribLocation(m_shaderProgram, "color");
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 3* sizeof(GLdouble), (void*)(2 * sizeof(GLfloat)));*/
+	glUseProgram(m_shaderProgram);
 }
 
 void Camera::draw()
@@ -409,65 +391,23 @@ void Camera::drawGameObject(GameObject& go)
 	
 	Transform t = go.getTransform();
 	Mesh mesh = t.applyTransform(go.getMesh());
-	unsigned int vao;
-	//std::vector<Triangle3D> triangles = std::vector<Triangle3D>();
+	unsigned int m_vao; // vao for all
+	unsigned int m_vbo; // vertex buffer (vbo)
+	unsigned int m_ebo; // index buffer (vbo)
 
-	// loads vertices
-
-	//for (size_t i = 0; i < mesh.getIndexBufferSize() - 2; i += 3)
-	//{
-	//	int iterator = static_cast<int>(i);
-	//	int sol = iterator / 3;
-	//	size_t vo = 0; // every third vertex
-	//	if (sol < mesh.getTriCount())
-	//		vo = sol; //size_t scam 
-
-	//	int normalIndex = mesh.shareNormalIndex()[vo]; // get the normal buffer index
-
-
-	//	Triangle3D tri = Triangle3D(
-	//		mesh.loadVertex(mesh.shareIndex()[i] - 1),
-	//		mesh.loadVertex(mesh.shareIndex()[i + 1] - 1),
-	//		mesh.loadVertex(mesh.shareIndex()[i + 2] - 1),
-	//		mesh.loadBakedMaterial(mesh.shareIndex()[i] - 1),
-	//		mesh.loadBakedMaterial(mesh.shareIndex()[i + 1] - 1),
-	//		mesh.loadBakedMaterial(mesh.shareIndex()[i + 2] - 1)); 
-	//	
-	//	Vector3D normal = mesh.loadNormal(normalIndex - 1); // normalbuffer stores normal vectors/face
-	//		if (normal.dot(focuspoint - tri.getWpoint()) < 0)
-	//			continue;
-
-
-	//	triangles.push_back(tri); // extract a triangle from the vertex array
-	//
-	//}
-	//double* vertices = new double[triangles.size() * 9];
-	//double* materials = new double[triangles.size() * 9];
-
-	//for (size_t i = 0; i < triangles.size();i++)
-	//{
-	//	vertices[i*9] = triangles[i].getV1().getX();
-	//	vertices[i*9+1] = triangles[i].getV1().getY();
-	//	vertices[i*9+2] = triangles[i].getV1().getZ();
-	//	vertices[i * 9+ 3] = triangles[i].getV2().getX();
-	//	vertices[i * 9 + 4] = triangles[i].getV2().getY();
-	//	vertices[i * 9 + 5] = triangles[i].getV2().getZ();
-	//	vertices[i * 9 + 6] = triangles[i].getV3().getX();
-	//	vertices[i * 9 + 7] = triangles[i].getV3().getY();
-	//	vertices[i * 9 + 8] = triangles[i].getV3().getZ();
-
-	//}
+	glCreateVertexArrays(1, &m_vao);
+	glBindVertexArray(m_vao);
 
 	int* indices = new int[mesh.getIndexBufferSize()];
 
 	for (size_t i = 0; i < mesh.getIndexBufferSize(); i++)
 	{
-		indices[i] = mesh.shareIndex()[i]-1;
+		indices[i] = (int)(mesh.shareIndex()[i])-1;
 	}
 
 	// BINDING THE INDEX BUFFER
-	glGenBuffers(1, &m_shaderProgram);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_shaderProgram); //bind the buffer (set the "state machine")
+	glGenBuffers(1, &m_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo); //bind the buffer (set the "state machine")
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.getIndexBufferSize() * sizeof(GLuint), indices, GL_DYNAMIC_DRAW); //write data to buffer (gluint is the correct OPENGL size)
 
 	double* vertices = new double[mesh.getVertexCount()*3];
@@ -475,64 +415,40 @@ void Camera::drawGameObject(GameObject& go)
 	// GETTING THE VERTICES
 	for (size_t i = 0; i < mesh.getVertexCount();i++)
 	{
-		vertices[i*3] = mesh.loadVertex(i).getX();
+		vertices[i * 3] = mesh.loadVertex(i).getX();
 		vertices[i * 3+1] = mesh.loadVertex(i).getY();
 		vertices[i * 3+2] = mesh.loadVertex(i).getZ();
 	}
 
 	// BINDING THE VBO
-	glGenBuffers(1, &m_shaderProgram); //create a buffer with "buffer" id
-	glBindBuffer(GL_ARRAY_BUFFER, m_shaderProgram); //bind the buffer (set the "state machine")
+	glGenBuffers(1, &m_vbo); //create a buffer with "buffer" id
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo); //bind the buffer (set the "state machine")
 	glBufferData(GL_ARRAY_BUFFER, mesh.getVertexCount()*3*sizeof(double), vertices, GL_DYNAMIC_DRAW); //write data to buffer
-
-
-
-	// bind them
-
-	//glGenVertexArrays(1, &vao);	// get 1 vao id
-	//glBindVertexArray(vao);		// make it active
-
-	//unsigned int vbo;		// vertex buffer object
-	//glGenBuffers(1, &vbo);	// Generate 1 buffer
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	//glBufferData(GL_ARRAY_BUFFER, 	// Copy to GPU target
-	//	sizeof(double) * triangles.size() * 9,  // # bytes
-	//	vertices,	      	// address
-	//	GL_DYNAMIC_DRAW);	// we do not change later
 
 	glEnableVertexAttribArray(0);  // AttribArray 0
 	glVertexAttribPointer(0,       // vbo -> AttribArray 0
 		3, GL_DOUBLE, GL_FALSE, // three floats/attrib, not fixed-point
 		0, NULL); 		     // stride, offset: tightly packed
 
-	//glEnableVertexAttribArray(1);  // AttribArray 0
-	//glVertexAttribPointer(1,       // vbo -> AttribArray 0
-	//	3, GL_DOUBLE, GL_FALSE, // three floats/attrib, not fixed-point
-	//	0, NULL); 		     // stride, offset: tightly packed
 
+	
 
-	/*GLint posAttrib = glGetAttribLocation(m_shaderProgram, "vp");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_DOUBLE, GL_FALSE, 0, NULL);
-
-	GLint colAttrib = glGetAttribLocation(m_shaderProgram, "color");
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLdouble), (void*)(2 * sizeof(GLfloat)));*/
+	glEnableVertexAttribArray(1);  // AttribArray 0
+	glVertexAttribPointer(1,       // vbo -> AttribArray 0
+		3, GL_DOUBLE, GL_FALSE, // three floats/attrib, not fixed-point
+		0, NULL); 		     // stride, offset: tightly packed
 
 
 	// draw
 
-	glUseProgram(m_shaderProgram);
-
-	/*double pitch = t.getPitch();
+	double pitch = t.getPitch();
 	double yaw = t.getYaw();
 	Vector3D goPos = t.getPos();
 
 	mat4 scale = mat4(
-		vec4(0.001, 0, 0, 0),
-		vec4(0, 0.001, 0, 0),
-		vec4(0, 0, 0.001, 0),
+		vec4(1, 0, 0, 0),
+		vec4(0, 1, 0, 0),
+		vec4(0, 0, 1, 0),
 		vec4(0, 0, 0, 1));
 
 	mat4 rot = mat4(
@@ -547,18 +463,12 @@ void Camera::drawGameObject(GameObject& go)
 		vec4(0, 0, 1, 0),
 		vec4(goPos.getX(), goPos.getY(), goPos.getZ(), 1));
 
-	mat4 model = scale * rot * pos;*/
-	//double* mp = &(model[0][0]);
+	mat4 model = scale ;
+	float* mp = &(model[0][0]);
 
-	//float MVPtransf[4][4] = { 1, 0, 0, 0,    // MVP matrix, 
-	//						  0, 1, 0, 0,    // row-major!
-	//						  0, 0, 1, 0,
-	//						  0, 0, 0, 1 };
-
-	//for (int i = 0; i < 4; i++)
-	//	for (int j = 0; j < 4; j++)
-	//		MVPtransf[i][j] = model[i][j];
-
+	//int location = glGetUniformLocation(m_shaderProgram, "MVP");	// Get the GPU location of uniform variable MVP
+	//glUniformMatrix4fv(location, 1, GL_TRUE, mp);	// Load a 4x4 row-major float matrix to the specified location
+	
 	
 
 	glMatrixMode(GL_PROJECTION); // projection matrix for "3d"
@@ -573,25 +483,21 @@ void Camera::drawGameObject(GameObject& go)
 		front.getX(), front.getY(), front.getZ(),
 		up.getX(), up.getY(), up.getZ()); // view matrix (camara rotation)
 
-	glBindVertexArray(m_shaderProgram);  // Draw call
+	
 	//glDrawArrays(GL_TRIANGLES, 0 /*startIdx*/, triangles.size()*3 /*# Elements*/);
 	glDrawElements(GL_TRIANGLES, mesh.getIndexBufferSize(), GL_UNSIGNED_INT, nullptr);
-	//int location = glGetUniformLocation(m_shaderProgram, "MVP");	// Get the GPU location of uniform variable MVP
-	//glUniformMatrix4dv(location, 1, GL_TRUE, mp);	// Load a 4x4 row-major float matrix to the specified location
 
 
-
-
-	glDeleteBuffers(1, &m_shaderProgram); // delete vertex buffer, and index (element) buffer
-	glDeleteVertexArrays(1, &m_shaderProgram); //delete vao
 	
-
+	glDeleteBuffers(1, &m_vbo); // delete vertex buffer, and index (element) buffer
+	glDeleteBuffers(1, &m_ebo);
+	glDeleteVertexArrays(1, &m_vao); //delete vao
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); //clear vbo?
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // clear index buffer
 	glBindVertexArray(0); //clear vao
-	glUseProgram(0);
 
+	//glUseProgram(0);
 
 	delete[] vertices;
 	delete[] indices;

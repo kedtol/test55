@@ -21,9 +21,9 @@ Program::Program(SDL_GLContext* _gcontext,InputHandler* _ih)
 	//map.push_back(GameObject(Transform(Vector3D(-0, -0, 0)), 300, 10, 10));
 
 	
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		map.push_back(GameObject(Transform(Vector3D(i*100, 0, 0)), rl.getMesh(4)));
+		map.push_back(GameObject(Transform(Vector3D(i*100, 0, 0)), rl.getMesh(2)));
 		//map.push_back(GameObject(Transform(Vector3D(rand()%1300, rand() % 1300, rand() % 1300)), Mesh(20)));
 	}
 
@@ -60,12 +60,12 @@ void Program::drawCycle()
 void Program::lightUpdate()
 {
 	
-	for (size_t i = 0; i < map.size(); i++)
+	/*for (size_t i = 0; i < map.size(); i++)
 	{
 		map[i].getMeshp()->resetBakedMaterial();
 		for (size_t j = 0; j < lights.size(); j++)
 		{
 			map[i].getMeshp()->bakeLightSource(lights[j], map[i].getTransform().applyTransform(map[i].getMesh()));
 		}
-	}
+	}*/
 }
